@@ -9,7 +9,8 @@ public class PlayerInputChirector : MonoBehaviour
     private Vector3 m_CamForward;             // The current forward direction of the camera
     private Vector3 m_Move;
     private bool m_Jump;
-    float jump;
+    private bool isAttacking; 
+
 
 
 
@@ -40,8 +41,12 @@ public class PlayerInputChirector : MonoBehaviour
     {
         if (!m_Jump)
         {
-            jump = Input.GetAxis("Jump");
-            if (jump > 0) { m_Jump = true; } else { m_Jump = false; }
+            m_Jump = Input.GetButtonDown("Jump");
+            
+        }
+        if (!isAttacking)
+        {
+            isAttacking = Input.GetButtonDown("Fire1"); 
         }
     }
 
@@ -66,7 +71,8 @@ public class PlayerInputChirector : MonoBehaviour
         }
 
         // pass all parameters to the character control script
-        m_Character.Move(m_Move, m_Jump);
+        m_Character.Move(m_Move, m_Jump,isAttacking);
         m_Jump = false;
+        isAttacking = false; 
     }
 }

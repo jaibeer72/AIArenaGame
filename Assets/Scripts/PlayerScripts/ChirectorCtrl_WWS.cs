@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
@@ -34,6 +35,12 @@ public class ChirectorCtrl_WWS : MonoBehaviour
     float m_TurnAmount;
     float m_ForwardAmount;
     float m_CapsuleHeight;
+    bool m_Attacking;
+    [Space]
+    [Header("Attack Areas Allocater")]
+    public Transform[] attackAreas;
+    public float range;
+    public LayerMask myLayerMask;
 
 
     // Use this for initialization
@@ -50,7 +57,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
     }
-    public void Move(Vector3 move, bool jump)
+    public void Move(Vector3 move, bool jump,bool isAttacking)
     {
         
         CheckGroundStatus();
@@ -67,6 +74,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         {
             m_Capsule.center = new Vector3(0, 1f, 0);
             HandleGroundedMovement(jump);
+            HandhelAttacking(isAttacking);
         }
         else
         {
@@ -74,6 +82,29 @@ public class ChirectorCtrl_WWS : MonoBehaviour
             HandleAirborneMovement();
         }
         UpdateAnimator(move);
+    }
+
+    private void FixedUpdate()
+    {
+        HandhelAttacking(m_Attacking);
+    }
+
+    private void HandhelAttacking(bool isAttacking)
+    {
+        if(isAttacking &&  m_IsGrounded)
+        {
+            m_Attacking = true;
+            RaycastHit hit;
+            for (int i = 0; i < attackAreas.Length; i++)
+            {
+                Debug.DrawLine(attackAreas[i].transform.position + (attackAreas[i].transform.forward * 0.1f), attackAreas[i].transform.position + (Vector3.forward * 0.1f) + (attackAreas[i].transform.forward * range), Color.red, 5f);
+                if (Physics.Raycast(attackAreas[i].transform.position, attackAreas[i].transform.forward, out hit, range, myLayerMask))
+                {
+                    Debug.Log("Reaching");
+                    Debug.Log(hit.transform.name);
+                }
+            }
+        }
     }
 
 
@@ -90,6 +121,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         //Debug.Log(m_ForwardAmount);
         //m_Animator.SetBool("Crouch", m_Crouching);
         m_Animator.SetBool("isGrounded", m_IsGrounded);
+        m_Animator.SetBool("isAttacking", m_Attacking); 
 
 
         if (!m_IsGrounded)
@@ -121,6 +153,10 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         {
             // don't use that while airborne
             m_Animator.speed = 1;
+        }
+        if(m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime>1)
+        {
+            m_Attacking = false; 
         }
     }
 
