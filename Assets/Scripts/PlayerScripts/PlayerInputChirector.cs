@@ -9,7 +9,9 @@ public class PlayerInputChirector : MonoBehaviour
     private Vector3 m_CamForward;             // The current forward direction of the camera
     private Vector3 m_Move;
     private bool m_Jump;
-    private bool isAttacking; 
+    public static bool isAttacking;
+    public bool enable;
+    AttackType attType; 
 
 
 
@@ -18,6 +20,7 @@ public class PlayerInputChirector : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        CursorHide(enable);
         // get the transform of the main camera
         m_Move = new Vector3();
         if (Camera.main != null)
@@ -39,14 +42,18 @@ public class PlayerInputChirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (!m_Jump)
         {
             m_Jump = Input.GetButtonDown("Jump");
-            
+
         }
         if (!isAttacking)
         {
-            isAttacking = Input.GetButtonDown("Fire1"); 
+            if(Input.GetButtonDown("Fire1")|| Input.GetButton("Fire2")||Input.GetButtonDown("Fire3")) { isAttacking = true; }
+            if (Input.GetButtonDown("Fire1")) { attType = AttackType.basic; }
+            if (Input.GetButtonDown("Fire2")) { attType = AttackType.stunn; }
+            if (Input.GetButtonDown("Fire3")) { attType = AttackType.magic; }
         }
     }
 
@@ -71,8 +78,20 @@ public class PlayerInputChirector : MonoBehaviour
         }
 
         // pass all parameters to the character control script
-        m_Character.Move(m_Move, m_Jump,isAttacking);
+        m_Character.Move(m_Move, m_Jump, isAttacking,attType);
         m_Jump = false;
-        isAttacking = false; 
+    }
+
+    public void CursorHide(bool enable)
+    {
+        Cursor.visible = enable;
+        if (!enable)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 }

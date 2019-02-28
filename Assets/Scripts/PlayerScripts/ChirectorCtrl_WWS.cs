@@ -1,6 +1,5 @@
-﻿using System;
-using UnityEngine;
-
+﻿using UnityEngine;
+using UnityEngine.Experimental.VFX;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
@@ -41,12 +40,17 @@ public class ChirectorCtrl_WWS : MonoBehaviour
     public Transform[] attackAreas;
     public float range;
     public LayerMask myLayerMask;
+    Vector3 movementVector;
+    AttackType attack;
+    public VisualEffect vfx;
+    
+    
 
 
     // Use this for initialization
     void Start()
     {
-
+        vfx.SendEvent("OnStop");
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Capsule = GetComponent<CapsuleCollider>();
@@ -57,9 +61,10 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
     }
-    public void Move(Vector3 move, bool jump,bool isAttacking)
+    public void Move(Vector3 move, bool jump, bool isAttacking, AttackType attType)
     {
-        
+        movementVector = move;
+        attack = attType;
         CheckGroundStatus();
         if (move.magnitude > 1f) move.Normalize();
         move = transform.InverseTransformDirection(move);
@@ -72,38 +77,45 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         // control and velocity handling is different when grounded and airborne:
         if (m_IsGrounded)
         {
-            m_Capsule.center = new Vector3(0, 1f, 0);
+
             HandleGroundedMovement(jump);
-            HandhelAttacking(isAttacking);
+
+            m_Attacking = PlayerInputChirector.isAttacking;
         }
         else
         {
-            m_Capsule.center = new Vector3(0, 1.5f, 0);
+
             HandleAirborneMovement();
         }
         UpdateAnimator(move);
     }
 
-    private void FixedUpdate()
-    {
-        HandhelAttacking(m_Attacking);
-    }
 
-    private void HandhelAttacking(bool isAttacking)
+
+    private void HandhelAttacking(bool isAttacking, AttackType attackType)
     {
-        if(isAttacking &&  m_IsGrounded)
+        if (isAttacking && m_IsGrounded)
         {
-            m_Attacking = true;
+            
             RaycastHit hit;
+            m_Animator.applyRootMotion = false;
+            transform.Rotate(0, movementVector.y, 0);
+            m_Rigidbody.velocity = new Vector3(movementVector.x, transform.position.y, movementVector.z) * 6;
             for (int i = 0; i < attackAreas.Length; i++)
             {
                 Debug.DrawLine(attackAreas[i].transform.position + (attackAreas[i].transform.forward * 0.1f), attackAreas[i].transform.position + (Vector3.forward * 0.1f) + (attackAreas[i].transform.forward * range), Color.red, 5f);
                 if (Physics.Raycast(attackAreas[i].transform.position, attackAreas[i].transform.forward, out hit, range, myLayerMask))
                 {
-                    Debug.Log("Reaching");
-                    Debug.Log(hit.transform.name);
+
+                    if (hit.transform.tag == "Enemy")
+                    {
+                        Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
+                        enemy.AddForce(attackAreas[i].transform.forward * 50, ForceMode.Impulse);
+                        Debug.Log(hit.transform.name);
+                    }
                 }
             }
+
         }
     }
 
@@ -121,9 +133,12 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         //Debug.Log(m_ForwardAmount);
         //m_Animator.SetBool("Crouch", m_Crouching);
         m_Animator.SetBool("isGrounded", m_IsGrounded);
-        m_Animator.SetBool("isAttacking", m_Attacking); 
-
-
+        m_Animator.SetBool("isAttacking", m_Attacking);
+        
+        m_Animator.SetInteger("AttackType", (int)attack);
+        if (attack == AttackType.magic) { vfx.SendEvent("OnPlay"); Debug.Log((int)attack); }
+        else { vfx.SendEvent("OnStop"); }
+        HandhelAttacking(PlayerInputChirector.isAttacking, attack);
         if (!m_IsGrounded)
         {
             m_Animator.SetFloat("Jump", m_Rigidbody.velocity.y);
@@ -154,17 +169,19 @@ public class ChirectorCtrl_WWS : MonoBehaviour
             // don't use that while airborne
             m_Animator.speed = 1;
         }
-        if(m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime>1)
+        if (m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
         {
-            m_Attacking = false; 
+            m_Attacking = false;
+            PlayerInputChirector.isAttacking = false; 
         }
+    
     }
 
     public void OnAnimatorMove()
     {
         // we implement this function to override the default root motion.
         // this allows us to modify the positional speed before it's applied.
-        if (m_IsGrounded && Time.deltaTime > 0)
+        if (m_IsGrounded && Time.deltaTime > 0 && !m_Attacking)
         {
             Vector3 v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
 
@@ -172,10 +189,11 @@ public class ChirectorCtrl_WWS : MonoBehaviour
             v.y = m_Rigidbody.velocity.y;
             m_Rigidbody.velocity = v;
         }
+       
     }
     #endregion
 
-    #region UnderstantLater
+    #region GroundCheck etc
     void CheckGroundStatus()
     {
         RaycastHit hitInfo;
