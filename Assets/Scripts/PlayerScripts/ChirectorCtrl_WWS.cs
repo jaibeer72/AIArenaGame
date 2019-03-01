@@ -43,6 +43,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
     Vector3 movementVector;
     AttackType attack;
     public VisualEffect vfx;
+    public float hitStrength=100;
     
     
 
@@ -110,8 +111,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
                     if (hit.transform.tag == "Enemy")
                     {
                         Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
-                        enemy.AddForce(attackAreas[i].transform.forward * 50, ForceMode.Impulse);
-                        Debug.Log(hit.transform.name);
+                        enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
                     }
                 }
             }
@@ -136,8 +136,18 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         m_Animator.SetBool("isAttacking", m_Attacking);
         
         m_Animator.SetInteger("AttackType", (int)attack);
-        if (attack == AttackType.magic) { vfx.SendEvent("OnPlay"); Debug.Log((int)attack); }
-        else { vfx.SendEvent("OnStop"); }
+        if (attack == AttackType.magic && PlayerInputChirector.isAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        {
+            vfx.SendEvent("OnPlay");
+            m_Attacking = true;
+        }
+        if(attack == AttackType.magic && m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
+        {
+            m_Attacking = false;
+            PlayerInputChirector.isAttacking = false;
+            vfx.SendEvent("OnStop"); 
+        }
+        
         HandhelAttacking(PlayerInputChirector.isAttacking, attack);
         if (!m_IsGrounded)
         {
@@ -169,7 +179,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
             // don't use that while airborne
             m_Animator.speed = 1;
         }
-        if (m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
+        if (m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && attack!=AttackType.magic)
         {
             m_Attacking = false;
             PlayerInputChirector.isAttacking = false; 
@@ -252,4 +262,20 @@ public class ChirectorCtrl_WWS : MonoBehaviour
 
 
     #endregion
+    private void OnTriggerEnter(Collider other)
+    {
+       
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        
+        if (attack == AttackType.magic && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
+        {
+            Vector3 dir = transform.position - other.transform.position;
+            dir = dir.normalized;
+
+            Rigidbody enemy = other.transform.gameObject.GetComponent<Rigidbody>();
+            enemy.AddForce(dir * hitStrength);
+        }
+    }
 }
