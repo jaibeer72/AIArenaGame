@@ -214,7 +214,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         // 0.1f is a small offset to start the ray from inside the character
         // it is also good to note that the transform position in the sample assets is at the base of the character
         if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
-        {
+        { 
             m_GroundNormal = hitInfo.normal;
             m_IsGrounded = true;
             m_Animator.applyRootMotion = true;
@@ -262,10 +262,18 @@ public class ChirectorCtrl_WWS : MonoBehaviour
 
 
     #endregion
-    private void OnTriggerEnter(Collider other)
-    {
-       
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (AIstate == AttackType.magic && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
+    //    {
+    //        Vector3 dir = transform.position - other.transform.position;
+    //        dir = dir.normalized;
+
+    //        Rigidbody enemy = other.transform.gameObject.GetComponent<Rigidbody>();
+    //        enemy.AddForce(dir * hitStrength);
+    //        Debug.Log(other.transform.name); 
+    //    }
+    //}
     private void OnTriggerStay(Collider other)
     {
         
@@ -275,7 +283,9 @@ public class ChirectorCtrl_WWS : MonoBehaviour
             dir = dir.normalized;
 
             Rigidbody enemy = other.transform.gameObject.GetComponent<Rigidbody>();
-            enemy.AddForce(dir * hitStrength);
+            enemy.AddForce(-dir * hitStrength,ForceMode.Impulse);
+            //Debug.Log(other.transform.name);
         }
     }
+
 }

@@ -4,17 +4,7 @@ using UnityEngine;
 
 public class AttackManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
 
 public enum AttackType
@@ -22,4 +12,14 @@ public enum AttackType
     basic, 
     stunn, 
     magic
-}; 
+};
+
+
+public enum TankAIStates
+{
+    idel,
+    walking,
+    basicAttack,
+    rushAttack,
+    stunned
+};
