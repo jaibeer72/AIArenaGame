@@ -17,9 +17,10 @@ public enum AttackType
 
 public enum TankAIStates
 {
-    idel,
-    walking,
     basicAttack,
-    rushAttack,
-    stunned
+    idel,
+    stunned,
+    walking,
+    rushAttack
+    
 };

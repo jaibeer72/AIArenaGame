@@ -284,6 +284,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
 
             Rigidbody enemy = other.transform.gameObject.GetComponent<Rigidbody>();
             enemy.AddForce(-dir * hitStrength,ForceMode.Impulse);
+            other?.GetComponent<TankAIController>().isAttacked(attack); 
             //Debug.Log(other.transform.name);
         }
     }

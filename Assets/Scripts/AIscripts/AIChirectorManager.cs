@@ -79,7 +79,7 @@ public class AIChirectorManager : MonoBehaviour
 
             HandleGroundedMovement(jump);
 
-            //m_IsAttacking = PlayerInputChirector.isAttacking;
+            m_IsAttacking = isAttacking;
         }
         else
         {
@@ -97,7 +97,7 @@ public class AIChirectorManager : MonoBehaviour
         {
 
             RaycastHit hit;
-            m_Animator.applyRootMotion = false;
+            //m_Animator.applyRootMotion = false;
             transform.Rotate(0, movementVector.y, 0);
             m_Rigidbody.velocity = new Vector3(movementVector.x, transform.position.y, movementVector.z) * 6;
             for (int i = 0; i < attackAreas.Length; i++)
@@ -134,6 +134,11 @@ public class AIChirectorManager : MonoBehaviour
         m_Animator.SetBool("isAttacking", m_IsAttacking);
         //#The type of attack is based on the enum 
         m_Animator.SetInteger("AttackType", (int)AIstate);
+        //Debug.Log(m_IsAttacking);
+        if (AIstate == TankAIStates.rushAttack)
+        {
+            HandhelAttacking(true, TankAIStates.rushAttack);
+        }
         //#Maybe get rid of this part as everything can be managed in Animator controller. using move function 
         //if (AIstate == TankAIStates.idel && PlayerInputChirector.isAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         //{
@@ -177,11 +182,11 @@ public class AIChirectorManager : MonoBehaviour
             // don't use that while airborne
             m_Animator.speed = 1;
         }
-        if (m_IsAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && AIstate != TankAIStates.idel)
-        {
-            m_IsAttacking = false;
-            PlayerInputChirector.isAttacking = false;
-        }
+        //if (m_IsAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && AIstate != TankAIStates.idel)
+        //{
+        //    m_IsAttacking = false;
+        //    PlayerInputChirector.isAttacking = false;
+        //}
 
     }
 
