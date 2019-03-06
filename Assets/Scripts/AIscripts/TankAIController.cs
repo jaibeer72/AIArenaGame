@@ -24,6 +24,7 @@ public class TankAIController : MonoBehaviour
         tankAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
         tankAgent.SetDestination(player.transform.position);
+        tankState = TankAIStates.walking;
 
     }
 
@@ -35,84 +36,83 @@ public class TankAIController : MonoBehaviour
 
     void TankAISateAIManagement()
     {
-
-        if (tankState != TankAIStates.rushAttack && tankState != TankAIStates.stunned && tankState != TankAIStates.idel)
+        switch (tankState)
         {
-            // we can use reamaining distance for the distance calculation. 
-            if (tankAgent.remainingDistance > tankAgent.stoppingDistance)
-            {
-                tankState = TankAIStates.walking;
-                tankAgent.SetDestination(player.transform.position);
-                aiChirectorScript.Move(tankAgent.desiredVelocity * 0.5f, false, false, tankState);
-            }
-
-            // Checks if tank is russing to the player if not then use the basic attack. 
-            if (tankAgent.remainingDistance < tankAgent.stoppingDistance && tankState != TankAIStates.rushAttack)
-            {
-                //Make state idel
-                // basic attack
-                StartCoroutine(RushAttackTime());
-                tankState = TankAIStates.basicAttack;
+            case TankAIStates.basicAttack:
                 tankAgent.SetDestination(player.transform.position);
                 aiChirectorScript.Move(tankAgent.desiredVelocity, false, true, tankState);
+                StartCoroutine(RushAttackTime());
+                if (tankAgent.remainingDistance > tankAgent.stoppingDistance)
+                {
+                    tankState = TankAIStates.walking;
+                }
+                break;
 
-            }
-        }
-        else if (tankState == TankAIStates.rushAttack && tankState != TankAIStates.stunned)
-        {
-            StopCoroutine(RushAttackTime());
-            if (isAwayTargetSet && !isGoingTowardsPlayer)
-            {
-                tankAgent.SetDestination(secondaryTarget.position);
-                aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
-            }
-            if (isAwayTargetSet && tankAgent.remainingDistance < tankAgent.stoppingDistance && !isGoingTowardsPlayer)
-            {
-                tankAgent.SetDestination(player.transform.position + transform.forward * 3);
-                aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
-                isGoingTowardsPlayer = true;
-                isAwayTargetSet = false;
-            }
-            if (isGoingTowardsPlayer && tankAgent.remainingDistance > tankAgent.stoppingDistance)
-            {
+            case TankAIStates.idel:
+                tankAgent.SetDestination(transform.position);
+                aiChirectorScript.Move(Vector3.zero, false, true, tankState);
+                break;
+
+            case TankAIStates.stunned:
+                StopCoroutine(RushAttackTime());
+                StartCoroutine(StunTime());
+                tankAgent.SetDestination(transform.position);
+                aiChirectorScript.Move(Vector3.zero, false, true, tankState);
+                break;
+
+            case TankAIStates.walking:
                 tankAgent.SetDestination(player.transform.position);
-                GetComponent<AIChirectorManager>().hitStrength = 50f;
-                aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
+                aiChirectorScript.Move(tankAgent.desiredVelocity * 0.5f, false, false, tankState);
+                if (tankAgent.remainingDistance < tankAgent.stoppingDistance)
+                {
+                    tankState = TankAIStates.basicAttack;
+                }
 
-            }
-            if (isGoingTowardsPlayer && tankAgent.remainingDistance < tankAgent.stoppingDistance)
-            {
-                //tankAgent.SetDestination(player.transform.position + transform.forward * 1);
-                //StartCoroutine(RushAttackTime());
-                GetComponent<AIChirectorManager>().hitStrength = 10f;
-                tankState = TankAIStates.basicAttack;
-                isGoingTowardsPlayer = false;
+                break;
+
+            case TankAIStates.rushAttack:
+                StopCoroutine(RushAttackTime());
+                if (isAwayTargetSet && !isGoingTowardsPlayer)
+                {
+                    tankAgent.SetDestination(secondaryTarget.position);
+                    aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
+                }
+                if (isAwayTargetSet && tankAgent.remainingDistance < tankAgent.stoppingDistance && !isGoingTowardsPlayer)
+                {
+                    tankAgent.SetDestination(player.transform.position + transform.forward * 3);
+                    aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
+                    isGoingTowardsPlayer = true;
+                    isAwayTargetSet = false;
+                }
+                if (isGoingTowardsPlayer && tankAgent.remainingDistance > tankAgent.stoppingDistance)
+                {
+                    tankAgent.SetDestination(player.transform.position);
+                    GetComponent<AIChirectorManager>().hitStrength = 50f;
+                    aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
+
+                }
+                if (isGoingTowardsPlayer && tankAgent.remainingDistance < tankAgent.stoppingDistance)
+                {
+                    //tankAgent.SetDestination(player.transform.position + transform.forward * 1);
+                    //StartCoroutine(RushAttackTime());
+                    GetComponent<AIChirectorManager>().hitStrength = 10f;
+                    tankState = TankAIStates.basicAttack;
+                    isGoingTowardsPlayer = false;
 
 
-            }
+                }
+                break;
+            default:
+                Debug.Log("TankState Error");
+                break;
         }
-        else if ( tankState == TankAIStates.stunned || tankState == TankAIStates.idel)
-        {
-            StopCoroutine(RushAttackTime());
-            StartCoroutine(StunTime());
-            tankAgent.SetDestination(transform.position);
-            aiChirectorScript.Move(Vector3.zero, false, true, tankState);
-        }
-        //if (Vector3.Distance(transform.position, player.transform.position) < range && PlayerInputChirector.isAttacking)
-        //{
 
-            //    //Set destination Away from the player 
-            //    //when AI reaches 
-            //    //set destination to player position 
-            //    //and run to him 
-
-            //}
     }
 
     IEnumerator RushAttackTime()
     {
-        yield return new WaitForSeconds(4);
-        //Debug.Log("called");
+        Debug.Log("called");
+        yield return new WaitForSeconds(4);  
         tankState = TankAIStates.rushAttack;
         TargetManager(player.transform, isGoingTowardsPlayer);
     }
@@ -126,7 +126,7 @@ public class TankAIController : MonoBehaviour
             secondaryTarget.position = new Vector3(playerPos.position.x + awayRadius * Mathf.Cos(randAngle), playerPos.position.y, playerPos.position.z + awayRadius * Mathf.Sin(randAngle));
             isAwayTargetSet = true;
             tankState = TankAIStates.rushAttack;
-            tankAgent.speed = 2;
+            //tankAgent.speed = 2;
         }
         else
         {
@@ -141,17 +141,19 @@ public class TankAIController : MonoBehaviour
     {
         if (playerAttackType == AttackType.magic)
         {
-            tankState = TankAIStates.stunned; 
+            tankState = TankAIStates.stunned;
         }
     }
 
     IEnumerator StunTime()
     {
         tankState = TankAIStates.stunned;
-        
-        yield return new WaitForSeconds(3);
+
+        yield return new WaitForSeconds(5);
         Debug.Log(tankState);
         tankState = TankAIStates.idel;
+        yield return new WaitForSeconds(1);
+        tankState = TankAIStates.walking;
         StopCoroutine(StunTime());
     }
 }

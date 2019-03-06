@@ -180,7 +180,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88540163}
-  m_LocalRotation: {x: 0.011203638, y: -0.91001123, z: 0.02464383, w: 0.4136988}
+  m_LocalRotation: {x: 0.011203668, y: -0.9100115, z: 0.02464381, w: 0.41369838}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -765,7 +765,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475406308}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.307986, y: 1.3699908, z: -2.9217331}
+  m_LocalPosition: {x: -3.3079884, y: 1.3699908, z: -2.9217305}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 604964760}
@@ -871,8 +871,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: -0.018706607, y: 0.9094144, z: -0.041148834, w: -0.41342744}
-  m_LocalPosition: {x: -3.307986, y: 1.3699908, z: -2.9217331}
+  m_LocalRotation: {x: -0.01870659, y: 0.90941465, z: -0.04114885, w: -0.41342703}
+  m_LocalPosition: {x: -3.3079884, y: 1.3699908, z: -2.9217305}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1268,7 +1268,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604964758}
-  m_LocalRotation: {x: 0.026223583, y: -0.9085155, z: 0.057683807, w: 0.4130188}
+  m_LocalRotation: {x: 0.026223542, y: -0.9085157, z: 0.057683796, w: 0.41301835}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1731,7 +1731,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1425635465}
-  m_LocalRotation: {x: 0.018706914, y: -0.9094144, z: 0.041148692, w: 0.4134275}
+  m_LocalRotation: {x: 0.018707074, y: -0.90941465, z: 0.041148614, w: 0.41342708}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2192,6 +2192,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_JumpPower
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653309819172441882, guid: 58989882e5a4c5c49974c9acfa450e19,
+        type: 3}
+      propertyPath: hitStrength
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6805077932430531606, guid: 58989882e5a4c5c49974c9acfa450e19,
         type: 3}

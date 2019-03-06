@@ -93,7 +93,7 @@ public class AIChirectorManager : MonoBehaviour
 
     private void HandhelAttacking(bool isAttacking, TankAIStates attackType)
     {
-        if (isAttacking && m_IsGrounded)
+        if (isAttacking && m_IsGrounded && attackType!= TankAIStates.stunned)
         {
 
             RaycastHit hit;
