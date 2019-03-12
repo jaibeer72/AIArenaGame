@@ -327,6 +327,7 @@ GameObject:
   - component: {fileID: 3179021322640655921}
   - component: {fileID: 5735605315315140673}
   - component: {fileID: 7025921362570596082}
+  - component: {fileID: 6367674968063154629}
   - component: {fileID: 1051675362}
   - component: {fileID: 1051675361}
   m_Layer: 0
@@ -381,11 +382,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -412,7 +413,7 @@ MonoBehaviour:
   m_RunCycleLegOffset: 0.2
   m_MoveSpeedMultiplier: 1
   m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 0.1
+  m_GroundCheckDistance: 0.34
   attackAreas:
   - {fileID: 5534579107472759108}
   - {fileID: 7504384107430924982}
@@ -420,7 +421,7 @@ MonoBehaviour:
   myLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  hitStrength: 100
+  hitStrength: 50
 --- !u!114 &7025921362570596082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,7 +434,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529e10500ce346f439adc8794f60ee61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
+  awayRadius: 10
+  secondaryTarget: {fileID: 0}
+--- !u!114 &6367674968063154629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2350203545465831518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4fbd265b4b9d4a4e99eee9ee61a8b0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
 --- !u!54 &1051675362
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -448,7 +463,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!136 &1051675361
 CapsuleCollider:

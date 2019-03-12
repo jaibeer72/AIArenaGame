@@ -43,9 +43,9 @@ public class ChirectorCtrl_WWS : MonoBehaviour
     Vector3 movementVector;
     AttackType attack;
     public VisualEffect vfx;
-    public float hitStrength=100;
-    
-    
+    public float hitStrength = 100;
+
+
 
 
     // Use this for initialization
@@ -97,7 +97,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
     {
         if (isAttacking && m_IsGrounded)
         {
-            
+
             RaycastHit hit;
             m_Animator.applyRootMotion = false;
             transform.Rotate(0, movementVector.y, 0);
@@ -110,8 +110,25 @@ public class ChirectorCtrl_WWS : MonoBehaviour
 
                     if (hit.transform.tag == "Enemy")
                     {
-                        Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
-                        enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
+                        Debug.Log("Hit");
+                        if (hit.transform.gameObject.GetComponent<TankAIController>() != null)
+                        {
+                            if (hit.transform.gameObject.GetComponent<TankAIController>().tankState == TankAIStates.stunned)
+                            {
+                                hit.transform.gameObject.GetComponent<HealthManager>().TakeDamage(true, 20);
+                            }
+                            else
+                            {
+                                return; 
+                            }
+                        }
+                        else
+                        {
+                            GetComponent<HealthManager>().TakeDamage(true, 10);
+                            Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
+                            enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
+                        }
+                        
                     }
                 }
             }
@@ -134,20 +151,20 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         //m_Animator.SetBool("Crouch", m_Crouching);
         m_Animator.SetBool("isGrounded", m_IsGrounded);
         m_Animator.SetBool("isAttacking", m_Attacking);
-        
+
         m_Animator.SetInteger("AttackType", (int)attack);
         if (attack == AttackType.magic && PlayerInputChirector.isAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         {
             vfx.SendEvent("OnPlay");
             m_Attacking = true;
         }
-        if(attack == AttackType.magic && m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
+        if (attack == AttackType.magic && m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
         {
             m_Attacking = false;
             PlayerInputChirector.isAttacking = false;
-            vfx.SendEvent("OnStop"); 
+            vfx.SendEvent("OnStop");
         }
-        
+
         HandhelAttacking(PlayerInputChirector.isAttacking, attack);
         if (!m_IsGrounded)
         {
@@ -179,12 +196,12 @@ public class ChirectorCtrl_WWS : MonoBehaviour
             // don't use that while airborne
             m_Animator.speed = 1;
         }
-        if (m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && attack!=AttackType.magic)
+        if (m_Attacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && attack != AttackType.magic)
         {
             m_Attacking = false;
-            PlayerInputChirector.isAttacking = false; 
+            PlayerInputChirector.isAttacking = false;
         }
-    
+
     }
 
     public void OnAnimatorMove()
@@ -199,7 +216,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
             v.y = m_Rigidbody.velocity.y;
             m_Rigidbody.velocity = v;
         }
-       
+
     }
     #endregion
 
@@ -214,7 +231,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         // 0.1f is a small offset to start the ray from inside the character
         // it is also good to note that the transform position in the sample assets is at the base of the character
         if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
-        { 
+        {
             m_GroundNormal = hitInfo.normal;
             m_IsGrounded = true;
             m_Animator.applyRootMotion = true;
@@ -276,15 +293,25 @@ public class ChirectorCtrl_WWS : MonoBehaviour
     //}
     private void OnTriggerStay(Collider other)
     {
-        
+
         if (attack == AttackType.magic && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
         {
-            Vector3 dir = transform.position - other.transform.position;
-            dir = dir.normalized;
+            if(other.gameObject.GetComponent<TankAIController>() != null)
+            {
+                other?.GetComponent<TankAIController>()?.isAttacked(attack);
+                //other.GetComponent<HealthManager>().TakeDamage(true, 30); 
+            }
+            else
+            {
+                Vector3 dir = transform.position - other.transform.position;
+                dir = dir.normalized;
+                Rigidbody enemy = other.gameObject.GetComponent<Rigidbody>();
+                enemy.AddForce(-dir * hitStrength, ForceMode.Impulse);
+                other.GetComponent<HealthManager>().TakeDamage(true, 10);
+            }
+            
 
-            Rigidbody enemy = other.transform.gameObject.GetComponent<Rigidbody>();
-            enemy.AddForce(-dir * hitStrength,ForceMode.Impulse);
-            other?.GetComponent<TankAIController>().isAttacked(attack); 
+
             //Debug.Log(other.transform.name);
         }
     }

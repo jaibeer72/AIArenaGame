@@ -107,8 +107,9 @@ public class AIChirectorManager : MonoBehaviour
                 {
 
                     if (hit.transform.tag == "Player")
-                    {
+                    {                     
                         Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
+                        hit.transform.gameObject.GetComponent<HealthManager>().TakeDamage(true, 5); 
                         enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
                     }
                 }
@@ -263,18 +264,18 @@ public class AIChirectorManager : MonoBehaviour
     }
 
 
-    private void OnTriggerStay(Collider other)
-    {
+    //private void OnTriggerStay(Collider other)
+    //{
 
-        if (AIstate == TankAIStates.idel && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
-        {
-            Vector3 dir = transform.position - other.transform.position;
-            dir = dir.normalized;
-
-            Rigidbody enemy = other.transform.gameObject.GetComponent<Rigidbody>();
-            enemy.AddForce(-dir * hitStrength, ForceMode.Impulse);
-            //Debug.Log(other.transform.name);
-        }
-    }
+    //    if (AIstate == TankAIStates.idel && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
+    //    {
+    //        Vector3 dir = transform.position - other.transform.position;
+    //        dir = dir.normalized;
+    //        other.gameObject.GetComponent<HealthManager>().TakeDamage(15); 
+    //        Rigidbody enemy = other.transform.gameObject.GetComponent<Rigidbody>();
+    //        enemy.AddForce(-dir * hitStrength, ForceMode.Impulse);
+    //        //Debug.Log(other.transform.name);
+    //    }
+    //}
     #endregion
 }

@@ -9,7 +9,7 @@ public class TankAIController : MonoBehaviour
 
     AIChirectorManager aiChirectorScript;
     GameObject player;
-    TankAIStates tankState;
+    public TankAIStates tankState;
     public float awayRadius;
     NavMeshAgent tankAgent;
     bool isGoingTowardsPlayer = false;
