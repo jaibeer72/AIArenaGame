@@ -10,17 +10,17 @@ public class TrollAIController : MonoBehaviour
 
     AIChirectorManager aiChirectorScript;
     GameObject player;
-    TankAIStates trollState;
+    AIStates trollState;
     NavMeshAgent trollAgent;
     // Start is called before the first frame update
     void Start()
     {
-        trollState = TankAIStates.idel;
+        trollState = AIStates.idel;
         aiChirectorScript = GetComponent<AIChirectorManager>();
         trollAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
         trollAgent.SetDestination(player.transform.position);
-        trollState = TankAIStates.walking;
+        trollState = AIStates.walking;
     }
 
     // Update is called once per frame
@@ -33,31 +33,35 @@ public class TrollAIController : MonoBehaviour
     {
         switch (trollState)
         {
-            case TankAIStates.basicAttack:
+            case AIStates.basicAttack:
                 trollAgent.SetDestination(player.transform.position);
                 aiChirectorScript.Move(trollAgent.desiredVelocity, false, true, trollState);
                 if (trollAgent.remainingDistance > trollAgent.stoppingDistance)
                 {
-                    trollState = TankAIStates.walking;
+                    trollState = AIStates.walking;
                 }
                 break;
-            case TankAIStates.idel:
+            case AIStates.idel:
                 trollAgent.SetDestination(transform.position);
                 aiChirectorScript.Move(Vector3.zero, false, true, trollState);
+               
                 break;
-            case TankAIStates.stunned:
+            case AIStates.stunned:
                 //will not happen but resuing code is fine.
-                Debug.Log("TrollState Error Stunned");
+                trollAgent.SetDestination(transform.position);
+                aiChirectorScript.Move(Vector3.zero, false, true, trollState);
+                StartCoroutine(StunTime());
+                //trollState = AIStates.walking; 
                 break;
-            case TankAIStates.walking:
+            case AIStates.walking:
                 trollAgent.SetDestination(player.transform.position);
                 aiChirectorScript.Move(trollAgent.desiredVelocity, false, false, trollState);
                 if (trollAgent.remainingDistance < trollAgent.stoppingDistance)
                 {
-                    trollState = TankAIStates.basicAttack;
+                    trollState = AIStates.basicAttack;
                 }
                 break;
-            case TankAIStates.rushAttack:
+            case AIStates.rushAttack:
                 //will not happen but it is useless to create multyple enums
                 Debug.Log("TrollState Error RushAttack");
                 break;
@@ -65,5 +69,17 @@ public class TrollAIController : MonoBehaviour
                 Debug.Log("TrollState Error default");
                 break;
         }
+    }
+    public void IsAttacked()
+    {
+            trollState = AIStates.stunned;
+    }
+    IEnumerator StunTime()
+    {
+        trollState = AIStates.stunned;
+        yield return new WaitForSeconds(1);
+        //Debug.Log(tankState);
+        trollState = AIStates.idel;
+        StopCoroutine(StunTime());
     }
 }

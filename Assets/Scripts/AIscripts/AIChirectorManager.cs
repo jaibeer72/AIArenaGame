@@ -41,7 +41,7 @@ public class AIChirectorManager : MonoBehaviour
     public float range;
     public LayerMask myLayerMask;
     Vector3 movementVector;
-    TankAIStates AIstate;
+    AIStates AIstate;
     public float hitStrength = 100;
 
 
@@ -60,7 +60,7 @@ public class AIChirectorManager : MonoBehaviour
         m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
     }
-    public void Move(Vector3 move, bool jump, bool isAttacking, TankAIStates state)
+    public void Move(Vector3 move, bool jump, bool isAttacking, AIStates state)
     {
         movementVector = move;
         AIstate = state;
@@ -91,9 +91,9 @@ public class AIChirectorManager : MonoBehaviour
 
 
 
-    private void HandhelAttacking(bool isAttacking, TankAIStates attackType)
+    private void HandhelAttacking(bool isAttacking, AIStates attackType)
     {
-        if (isAttacking && m_IsGrounded && attackType!= TankAIStates.stunned)
+        if (isAttacking && m_IsGrounded && attackType!= AIStates.stunned)
         {
 
             RaycastHit hit;
@@ -136,16 +136,16 @@ public class AIChirectorManager : MonoBehaviour
         //#The type of attack is based on the enum 
         m_Animator.SetInteger("AttackType", (int)AIstate);
         //Debug.Log(m_IsAttacking);
-        if (AIstate == TankAIStates.rushAttack)
+        if (AIstate == AIStates.rushAttack)
         {
-            HandhelAttacking(true, TankAIStates.rushAttack);
+            HandhelAttacking(true, AIStates.rushAttack);
         }
         //#Maybe get rid of this part as everything can be managed in Animator controller. using move function 
-        //if (AIstate == TankAIStates.idel && PlayerInputChirector.isAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        //if (AIstate == AIStates.idel && PlayerInputChirector.isAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         //{
         //    m_IsAttacking = true;
         //}
-        //if (AIstate == TankAIStates.idel && m_IsAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
+        //if (AIstate == AIStates.idel && m_IsAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f)
         //{
         //    m_IsAttacking = false;
         //    PlayerInputChirector.isAttacking = false;
@@ -183,7 +183,7 @@ public class AIChirectorManager : MonoBehaviour
             // don't use that while airborne
             m_Animator.speed = 1;
         }
-        //if (m_IsAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && AIstate != TankAIStates.idel)
+        //if (m_IsAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && AIstate != AIStates.idel)
         //{
         //    m_IsAttacking = false;
         //    PlayerInputChirector.isAttacking = false;
@@ -267,7 +267,7 @@ public class AIChirectorManager : MonoBehaviour
     //private void OnTriggerStay(Collider other)
     //{
 
-    //    if (AIstate == TankAIStates.idel && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
+    //    if (AIstate == AIStates.idel && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
     //    {
     //        Vector3 dir = transform.position - other.transform.position;
     //        dir = dir.normalized;

@@ -15,11 +15,11 @@ public enum AttackType
 };
 
 
-public enum TankAIStates
+public enum AIStates
 {
     basicAttack,
     idel,
-    stunned,
+    stunned,    
     walking,
     rushAttack
     

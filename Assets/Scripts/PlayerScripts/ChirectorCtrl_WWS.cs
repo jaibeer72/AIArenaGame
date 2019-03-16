@@ -110,20 +110,18 @@ public class ChirectorCtrl_WWS : MonoBehaviour
 
                     if (hit.transform.tag == "Enemy")
                     {
-                        Debug.Log("Hit");
+                        
                         if (hit.transform.gameObject.GetComponent<TankAIController>() != null)
                         {
-                            if (hit.transform.gameObject.GetComponent<TankAIController>().tankState == TankAIStates.stunned)
+                            if (hit.transform.gameObject.GetComponent<TankAIController>().tankState == AIStates.stunned)
                             {
                                 hit.transform.gameObject.GetComponent<HealthManager>().TakeDamage(true, 20);
-                            }
-                            else
-                            {
-                                return; 
                             }
                         }
                         else
                         {
+                            hit.transform.gameObject.GetComponent<TrollAIController>().IsAttacked();
+                            Debug.Log("Hit");
                             GetComponent<HealthManager>().TakeDamage(true, 10);
                             Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
                             enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
@@ -298,11 +296,12 @@ public class ChirectorCtrl_WWS : MonoBehaviour
         {
             if(other.gameObject.GetComponent<TankAIController>() != null)
             {
-                other?.GetComponent<TankAIController>()?.isAttacked(attack);
+                other.GetComponent<TankAIController>().isAttacked(attack);
                 //other.GetComponent<HealthManager>().TakeDamage(true, 30); 
             }
             else
             {
+                other?.GetComponent<TrollAIController>()?.IsAttacked();
                 Vector3 dir = transform.position - other.transform.position;
                 dir = dir.normalized;
                 Rigidbody enemy = other.gameObject.GetComponent<Rigidbody>();

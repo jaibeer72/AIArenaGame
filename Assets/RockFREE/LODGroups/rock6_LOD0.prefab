@@ -241,7 +241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4064086369364788}
   - component: {fileID: 205782464888577802}
-  - component: {fileID: 8580980550496099123}
+  - component: {fileID: 5579675867987176112}
   m_Layer: 0
   m_Name: rock6_LOD0
   m_TagString: Untagged
@@ -293,7 +293,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23308189751682668}
   m_Enabled: 1
---- !u!64 &8580980550496099123
+--- !u!64 &5579675867987176112
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -306,4 +306,4 @@ MeshCollider:
   serializedVersion: 3
   m_Convex: 1
   m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 7fe6223b2ee42544d96903008fd4553f, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 5405a12a60795b24abee3c451321bcb1, type: 3}

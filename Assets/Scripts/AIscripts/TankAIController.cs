@@ -9,7 +9,7 @@ public class TankAIController : MonoBehaviour
 
     AIChirectorManager aiChirectorScript;
     GameObject player;
-    public TankAIStates tankState;
+    public AIStates tankState;
     public float awayRadius;
     NavMeshAgent tankAgent;
     bool isGoingTowardsPlayer = false;
@@ -19,12 +19,12 @@ public class TankAIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tankState = TankAIStates.idel;
+        tankState = AIStates.idel;
         aiChirectorScript = GetComponent<AIChirectorManager>();
         tankAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
         tankAgent.SetDestination(player.transform.position);
-        tankState = TankAIStates.walking;
+        tankState = AIStates.walking;
 
     }
 
@@ -38,39 +38,39 @@ public class TankAIController : MonoBehaviour
     {
         switch (tankState)
         {
-            case TankAIStates.basicAttack:
+            case AIStates.basicAttack:
                 tankAgent.SetDestination(player.transform.position);
                 aiChirectorScript.Move(tankAgent.desiredVelocity, false, true, tankState);
                 StartCoroutine(RushAttackTime());
                 if (tankAgent.remainingDistance > tankAgent.stoppingDistance)
                 {
-                    tankState = TankAIStates.walking;
+                    tankState = AIStates.walking;
                 }
                 break;
 
-            case TankAIStates.idel:
+            case AIStates.idel:
                 tankAgent.SetDestination(transform.position);
                 aiChirectorScript.Move(Vector3.zero, false, true, tankState);
                 break;
 
-            case TankAIStates.stunned:
+            case AIStates.stunned:
                 StopCoroutine(RushAttackTime());
                 StartCoroutine(StunTime());
                 tankAgent.SetDestination(transform.position);
                 aiChirectorScript.Move(Vector3.zero, false, true, tankState);
                 break;
 
-            case TankAIStates.walking:
+            case AIStates.walking:
                 tankAgent.SetDestination(player.transform.position);
                 aiChirectorScript.Move(tankAgent.desiredVelocity * 0.5f, false, false, tankState);
                 if (tankAgent.remainingDistance < tankAgent.stoppingDistance)
                 {
-                    tankState = TankAIStates.basicAttack;
+                    tankState = AIStates.basicAttack;
                 }
 
                 break;
 
-            case TankAIStates.rushAttack:
+            case AIStates.rushAttack:
                 StopCoroutine(RushAttackTime());
                 if (isAwayTargetSet && !isGoingTowardsPlayer)
                 {
@@ -96,7 +96,7 @@ public class TankAIController : MonoBehaviour
                     //tankAgent.SetDestination(player.transform.position + transform.forward * 1);
                     //StartCoroutine(RushAttackTime());
                     GetComponent<AIChirectorManager>().hitStrength = 10f;
-                    tankState = TankAIStates.basicAttack;
+                    tankState = AIStates.basicAttack;
                     isGoingTowardsPlayer = false;
 
 
@@ -113,7 +113,7 @@ public class TankAIController : MonoBehaviour
     {
         Debug.Log("called");
         yield return new WaitForSeconds(4);  
-        tankState = TankAIStates.rushAttack;
+        tankState = AIStates.rushAttack;
         TargetManager(player.transform, isGoingTowardsPlayer);
     }
 
@@ -125,7 +125,7 @@ public class TankAIController : MonoBehaviour
             float randAngle = Random.Range(0.0f, 366.0f);
             secondaryTarget.position = new Vector3(playerPos.position.x + awayRadius * Mathf.Cos(randAngle), playerPos.position.y, playerPos.position.z + awayRadius * Mathf.Sin(randAngle));
             isAwayTargetSet = true;
-            tankState = TankAIStates.rushAttack;
+            tankState = AIStates.rushAttack;
             //tankAgent.speed = 2;
         }
         else
@@ -141,19 +141,19 @@ public class TankAIController : MonoBehaviour
     {
         if (playerAttackType == AttackType.magic)
         {
-            tankState = TankAIStates.stunned;
+            tankState = AIStates.stunned;
         }
     }
 
     IEnumerator StunTime()
     {
-        tankState = TankAIStates.stunned;
+        tankState = AIStates.stunned;
 
         yield return new WaitForSeconds(5);
         Debug.Log(tankState);
-        tankState = TankAIStates.idel;
+        tankState = AIStates.idel;
         yield return new WaitForSeconds(1);
-        tankState = TankAIStates.walking;
+        tankState = AIStates.walking;
         StopCoroutine(StunTime());
     }
 }

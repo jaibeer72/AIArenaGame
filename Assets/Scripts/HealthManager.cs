@@ -23,7 +23,7 @@ public class HealthManager : MonoBehaviour
         if (canTakeDamag)
         {
             currentHealth -= damage;
-            Debug.Log(currentHealth);
+            //Debug.Log(currentHealth);
         }
          
     }

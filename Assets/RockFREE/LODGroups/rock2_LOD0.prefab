@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4544157765214884}
   - component: {fileID: 205176963690524976}
-  - component: {fileID: 3504253718827879984}
+  - component: {fileID: 7235306536190285269}
   m_Layer: 0
   m_Name: rock2_LOD0
   m_TagString: Untagged
@@ -43,17 +43,17 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1311939128785062}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
-  m_Size: 7.6719537
+  m_LocalReferencePoint: {x: -0.17901397, y: 0.07052088, z: 0.16610909}
+  m_Size: 5.2871075
   m_FadeMode: 1
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.90217394
+  - screenRelativeHeight: 0.60222393
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23154113725590488}
-  - screenRelativeHeight: 0.6450664
+  - screenRelativeHeight: 0.33903658
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23604938984995106}
@@ -62,8 +62,8 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23589412245484464}
   m_Enabled: 1
---- !u!64 &3504253718827879984
-MeshCollider:
+--- !u!135 &7235306536190285269
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -72,10 +72,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: a6ec3703e29203d4cb67b94418cddab8, type: 3}
+  serializedVersion: 2
+  m_Radius: 2.84
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1380895481412942
 GameObject:
   m_ObjectHideFlags: 0
