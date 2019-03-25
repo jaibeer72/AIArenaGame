@@ -21,6 +21,7 @@ public enum AIStates
     idel,
     stunned,    
     walking,
-    rushAttack
+    rushAttack,
+    dead
     
 };

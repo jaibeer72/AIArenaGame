@@ -49,14 +49,14 @@ public class TankAIController : MonoBehaviour
                 break;
 
             case AIStates.idel:
-                tankAgent.SetDestination(transform.position);
+                tankAgent.isStopped = true;
                 aiChirectorScript.Move(Vector3.zero, false, true, tankState);
+                
                 break;
 
             case AIStates.stunned:
-                StopCoroutine(RushAttackTime());
-                StartCoroutine(StunTime());
-                tankAgent.SetDestination(transform.position);
+                
+                tankAgent.isStopped = true;
                 aiChirectorScript.Move(Vector3.zero, false, true, tankState);
                 break;
 
@@ -84,7 +84,7 @@ public class TankAIController : MonoBehaviour
                     isGoingTowardsPlayer = true;
                     isAwayTargetSet = false;
                 }
-                if (isGoingTowardsPlayer && tankAgent.remainingDistance > tankAgent.stoppingDistance)
+                if (isGoingTowardsPlayer /*&& tankAgent.remainingDistance > tankAgent.stoppingDistance*/)
                 {
                     tankAgent.SetDestination(player.transform.position);
                     GetComponent<AIChirectorManager>().hitStrength = 50f;
@@ -102,6 +102,11 @@ public class TankAIController : MonoBehaviour
 
                 }
                 break;
+
+            case AIStates.dead:
+                tankAgent.isStopped = true;
+                aiChirectorScript.Move(Vector3.zero, false, false, tankState); 
+                break; 
             default:
                 Debug.Log("TankState Error");
                 break;
@@ -112,9 +117,11 @@ public class TankAIController : MonoBehaviour
     IEnumerator RushAttackTime()
     {
         Debug.Log("called");
-        yield return new WaitForSeconds(4);  
+        yield return new WaitForSeconds(10);  
         tankState = AIStates.rushAttack;
-        TargetManager(player.transform, isGoingTowardsPlayer);
+        TargetManager(player.transform, false); 
+        Debug.Log(tankState);
+        //tankAgent.isStopped = false;
     }
 
     void TargetManager(Transform playerPos, bool isGoingTowards)
@@ -142,18 +149,25 @@ public class TankAIController : MonoBehaviour
         if (playerAttackType == AttackType.magic)
         {
             tankState = AIStates.stunned;
+            StopCoroutine(RushAttackTime()); 
+            StartCoroutine(StunTime());
+            tankAgent.isStopped=true; 
         }
     }
 
-    IEnumerator StunTime()
+    public IEnumerator StunTime()
     {
         tankState = AIStates.stunned;
-
-        yield return new WaitForSeconds(5);
+        Debug.Log(tankState);
+        yield return new WaitForSeconds(10);
+        tankState = AIStates.stunned;
         Debug.Log(tankState);
         tankState = AIStates.idel;
-        yield return new WaitForSeconds(1);
+        
+        yield return new WaitForSeconds(4);
         tankState = AIStates.walking;
+        tankAgent.isStopped = false;
+        StartCoroutine(RushAttackTime()); 
         StopCoroutine(StunTime());
     }
 }

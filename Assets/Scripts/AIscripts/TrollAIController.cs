@@ -10,7 +10,7 @@ public class TrollAIController : MonoBehaviour
 
     AIChirectorManager aiChirectorScript;
     GameObject player;
-    AIStates trollState;
+    public AIStates trollState;
     NavMeshAgent trollAgent;
     // Start is called before the first frame update
     void Start()
@@ -42,15 +42,16 @@ public class TrollAIController : MonoBehaviour
                 }
                 break;
             case AIStates.idel:
-                trollAgent.SetDestination(transform.position);
-                aiChirectorScript.Move(Vector3.zero, false, true, trollState);
+                trollAgent.isStopped = true;
+                aiChirectorScript.Move(Vector3.zero, false, false, trollState);
                
                 break;
             case AIStates.stunned:
                 //will not happen but resuing code is fine.
-                trollAgent.SetDestination(transform.position);
-                aiChirectorScript.Move(Vector3.zero, false, true, trollState);
                 StartCoroutine(StunTime());
+                trollAgent.isStopped = true;
+                aiChirectorScript.Move(Vector3.zero, false, false, trollState);    
+                
                 //trollState = AIStates.walking; 
                 break;
             case AIStates.walking:
@@ -65,6 +66,12 @@ public class TrollAIController : MonoBehaviour
                 //will not happen but it is useless to create multyple enums
                 Debug.Log("TrollState Error RushAttack");
                 break;
+
+            case AIStates.dead:
+                StopAllCoroutines(); 
+                trollAgent.isStopped = true;
+                aiChirectorScript.Move(Vector3.zero, false, false, trollState);
+                break;
             default:
                 Debug.Log("TrollState Error default");
                 break;
@@ -78,8 +85,14 @@ public class TrollAIController : MonoBehaviour
     {
         trollState = AIStates.stunned;
         yield return new WaitForSeconds(1);
-        //Debug.Log(tankState);
         trollState = AIStates.idel;
+        yield return new WaitForSeconds(5);
+        trollAgent.isStopped = false;
+        trollState = AIStates.walking;
+      
+        //Debug.Log(tankState);
         StopCoroutine(StunTime());
+
+
     }
 }

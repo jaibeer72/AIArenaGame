@@ -15,8 +15,9 @@ MonoBehaviour:
   components:
   - {fileID: 114768911825701282}
   - {fileID: 114438921651473220}
-  - {fileID: 114483623533699380}
+  - {fileID: 114844262277407182}
   - {fileID: 114250410774282012}
+  - {fileID: 114431183882271374}
 --- !u!114 &114250410774282012
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -46,7 +47,7 @@ MonoBehaviour:
     max: 1
   maxFogDistance:
     m_OverrideState: 1
-    m_Value: 5000
+    m_Value: 3750
     min: 0
   mipFogMaxMip:
     m_OverrideState: 1
@@ -63,14 +64,36 @@ MonoBehaviour:
     min: 0
   fogDistance:
     m_OverrideState: 1
-    m_Value: 335.56
+    m_Value: 337.23
     min: 0
   fogBaseHeight:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 8.6
   fogHeightAttenuation:
     m_OverrideState: 1
     m_Value: 0.587
+    min: 0
+    max: 1
+--- !u!114 &114431183882271374
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4910d90e50201484ba448b791a192696, type: 3}
+  m_Name: VolumetricLightingController
+  m_EditorClassIdentifier: 
+  active: 1
+  depthExtent:
+    m_OverrideState: 1
+    m_Value: 85
+    min: 0.1
+  sliceDistributionUniformity:
+    m_OverrideState: 1
+    m_Value: 0.086
     min: 0
     max: 1
 --- !u!114 &114438921651473220
@@ -90,81 +113,6 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 2
   fogType:
-    m_OverrideState: 1
-    m_Value: 2
---- !u!114 &114483623533699380
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df29e7cc05fbec4aa43e06ea875565d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  active: 1
-  rotation:
-    m_OverrideState: 1
-    m_Value: 0
-    min: 0
-    max: 360
-  skyIntensityMode:
-    m_OverrideState: 1
-    m_Value: 0
-  exposure:
-    m_OverrideState: 1
-    m_Value: 0
-  multiplier:
-    m_OverrideState: 1
-    m_Value: 1
-    min: 0
-  upperHemisphereLuxValue:
-    m_OverrideState: 1
-    m_Value: 1
-    min: 0
-  desiredLuxValue:
-    m_OverrideState: 1
-    m_Value: 20000
-  updateMode:
-    m_OverrideState: 1
-    m_Value: 0
-  updatePeriod:
-    m_OverrideState: 1
-    m_Value: 0
-    min: 0
-  includeSunInBaking:
-    m_OverrideState: 1
-    m_Value: 0
-  sunSize:
-    m_OverrideState: 1
-    m_Value: 0.04
-    min: 0
-    max: 1
-  sunSizeConvergence:
-    m_OverrideState: 1
-    m_Value: 5
-    min: 1
-    max: 10
-  atmosphereThickness:
-    m_OverrideState: 1
-    m_Value: 1
-    min: 0
-    max: 5
-  skyTint:
-    m_OverrideState: 1
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
-  groundColor:
-    m_OverrideState: 1
-    m_Value: {r: 0.369, g: 0.349, b: 0.341, a: 1}
-    hdr: 0
-    showAlpha: 1
-    showEyeDropper: 1
-  enableSunDisk:
     m_OverrideState: 1
     m_Value: 1
 --- !u!114 &114768911825701282
@@ -220,3 +168,78 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
     min: 0
+--- !u!114 &114844262277407182
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3df29e7cc05fbec4aa43e06ea875565d, type: 3}
+  m_Name: ProceduralSky
+  m_EditorClassIdentifier: 
+  active: 1
+  rotation:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 360
+  skyIntensityMode:
+    m_OverrideState: 0
+    m_Value: 0
+  exposure:
+    m_OverrideState: 0
+    m_Value: 0
+  multiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  upperHemisphereLuxValue:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  desiredLuxValue:
+    m_OverrideState: 0
+    m_Value: 20000
+  updateMode:
+    m_OverrideState: 0
+    m_Value: 0
+  updatePeriod:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+  includeSunInBaking:
+    m_OverrideState: 0
+    m_Value: 0
+  sunSize:
+    m_OverrideState: 0
+    m_Value: 0.04
+    min: 0
+    max: 1
+  sunSizeConvergence:
+    m_OverrideState: 0
+    m_Value: 5
+    min: 1
+    max: 10
+  atmosphereThickness:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+    max: 5
+  skyTint:
+    m_OverrideState: 0
+    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    hdr: 0
+    showAlpha: 1
+    showEyeDropper: 1
+  groundColor:
+    m_OverrideState: 0
+    m_Value: {r: 0.369, g: 0.349, b: 0.341, a: 1}
+    hdr: 0
+    showAlpha: 1
+    showEyeDropper: 1
+  enableSunDisk:
+    m_OverrideState: 0
+    m_Value: 1

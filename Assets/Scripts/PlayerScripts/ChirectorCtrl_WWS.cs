@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Experimental.VFX;
+using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
@@ -44,13 +46,12 @@ public class ChirectorCtrl_WWS : MonoBehaviour
     AttackType attack;
     public VisualEffect vfx;
     public float hitStrength = 100;
-
-
-
+    public ParticleSystem bloodPrefab;
 
     // Use this for initialization
     void Start()
     {
+        bloodPrefab.Stop(); 
         vfx.SendEvent("OnStop");
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
@@ -104,7 +105,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
             m_Rigidbody.velocity = new Vector3(movementVector.x, transform.position.y, movementVector.z) * 6;
             for (int i = 0; i < attackAreas.Length; i++)
             {
-                Debug.DrawLine(attackAreas[i].transform.position + (attackAreas[i].transform.forward * 0.1f), attackAreas[i].transform.position + (Vector3.forward * 0.1f) + (attackAreas[i].transform.forward * range), Color.red, 5f);
+               // Debug.DrawLine(attackAreas[i].transform.position + (attackAreas[i].transform.forward * 0.1f), attackAreas[i].transform.position + (Vector3.forward * 0.1f) + (attackAreas[i].transform.forward * range), Color.red, 5f);
                 if (Physics.Raycast(attackAreas[i].transform.position, attackAreas[i].transform.forward, out hit, range, myLayerMask))
                 {
 
@@ -113,18 +114,28 @@ public class ChirectorCtrl_WWS : MonoBehaviour
                         
                         if (hit.transform.gameObject.GetComponent<TankAIController>() != null)
                         {
+                            
                             if (hit.transform.gameObject.GetComponent<TankAIController>().tankState == AIStates.stunned)
                             {
                                 hit.transform.gameObject.GetComponent<HealthManager>().TakeDamage(true, 20);
+                                Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
+                                enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
+                                ParticleSystem bloodSpatter = Instantiate(bloodPrefab, hit.point, hit.transform.rotation, hit.transform) as ParticleSystem;
+                                bloodSpatter.Play();
+                                Destroy(bloodSpatter.gameObject,1);
+                                Debug.Log("Hit Tank");
                             }
                         }
                         else
                         {
                             hit.transform.gameObject.GetComponent<TrollAIController>().IsAttacked();
                             Debug.Log("Hit");
-                            GetComponent<HealthManager>().TakeDamage(true, 10);
+                            hit.transform.gameObject.GetComponent<EnemyHealth>().TakeDamage(true, 10);
                             Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
                             enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
+                            ParticleSystem bloodSpatter = Instantiate(bloodPrefab,hit.point, hit.transform.rotation, hit.transform) as ParticleSystem;
+                            bloodSpatter.Play();
+                            Destroy(bloodSpatter.gameObject, 2); 
                         }
                         
                     }
@@ -206,7 +217,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
     {
         // we implement this function to override the default root motion.
         // this allows us to modify the positional speed before it's applied.
-        if (m_IsGrounded && Time.deltaTime > 0 && !m_Attacking)
+        if (m_IsGrounded && Time.deltaTime > 0 && !PlayerInputChirector.isAttacking)
         {
             Vector3 v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
 
@@ -294,19 +305,22 @@ public class ChirectorCtrl_WWS : MonoBehaviour
 
         if (attack == AttackType.magic && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
         {
-            if(other.gameObject.GetComponent<TankAIController>() != null)
+            if(other.gameObject.GetComponent<TankAIController>() != null &&other.gameObject.GetComponent< TankAIController>().tankState!=AIStates.stunned)
             {
                 other.GetComponent<TankAIController>().isAttacked(attack);
+                StartCoroutine(other.GetComponent<TankAIController>().StunTime()); 
+                
                 //other.GetComponent<HealthManager>().TakeDamage(true, 30); 
             }
             else
             {
                 other?.GetComponent<TrollAIController>()?.IsAttacked();
+                other.transform.gameObject.GetComponent<EnemyHealth>().TakeDamage(true, 10);
                 Vector3 dir = transform.position - other.transform.position;
                 dir = dir.normalized;
                 Rigidbody enemy = other.gameObject.GetComponent<Rigidbody>();
                 enemy.AddForce(-dir * hitStrength, ForceMode.Impulse);
-                other.GetComponent<HealthManager>().TakeDamage(true, 10);
+             
             }
             
 

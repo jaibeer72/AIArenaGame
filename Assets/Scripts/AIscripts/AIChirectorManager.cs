@@ -43,6 +43,7 @@ public class AIChirectorManager : MonoBehaviour
     Vector3 movementVector;
     AIStates AIstate;
     public float hitStrength = 100;
+    public ParticleSystem bloodPrefab;
 
 
 
@@ -102,15 +103,18 @@ public class AIChirectorManager : MonoBehaviour
             m_Rigidbody.velocity = new Vector3(movementVector.x, transform.position.y, movementVector.z) * 6;
             for (int i = 0; i < attackAreas.Length; i++)
             {
-                Debug.DrawLine(attackAreas[i].transform.position + (attackAreas[i].transform.forward * 0.1f), attackAreas[i].transform.position + (Vector3.forward * 0.1f) + (attackAreas[i].transform.forward * range), Color.green, 5f);
+               Debug.DrawLine(attackAreas[i].transform.position + (attackAreas[i].transform.forward * 0.1f), attackAreas[i].transform.position + (Vector3.forward * 0.1f) + (attackAreas[i].transform.forward * range), Color.green, 5f);
                 if (Physics.Raycast(attackAreas[i].transform.position, attackAreas[i].transform.forward, out hit, range, myLayerMask))
                 {
 
                     if (hit.transform.tag == "Player")
                     {                     
                         Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
-                        hit.transform.gameObject.GetComponent<HealthManager>().TakeDamage(true, 5); 
+                        hit.transform.gameObject.GetComponent<HealthManager>().TakeDamage(true, 1); 
                         enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
+                        ParticleSystem bloodSpatter = Instantiate(bloodPrefab, hit.point, hit.transform.rotation, hit.transform) as ParticleSystem;
+                        bloodSpatter.Play();
+                        Destroy(bloodSpatter.gameObject, 1);
                     }
                 }
             }
@@ -127,9 +131,12 @@ public class AIChirectorManager : MonoBehaviour
     #region AnimatorUpdater
     void UpdateAnimator(Vector3 move)
     {
-        m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
-        m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
-        //Debug.Log(m_ForwardAmount);
+        if (!m_IsAttacking)
+        {
+            m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
+            m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
+            //Debug.Log(m_ForwardAmount);
+        }
         //m_Animator.SetBool("Crouch", m_Crouching);
         m_Animator.SetBool("isGrounded", m_IsGrounded);
         m_Animator.SetBool("isAttacking", m_IsAttacking);
@@ -174,14 +181,14 @@ public class AIChirectorManager : MonoBehaviour
         // which affects the movement speed because of the root motion.
 
 
-        if (m_IsGrounded && move.magnitude > 0)
+        if (m_IsGrounded && move.magnitude > 0 && AIstate != AIStates.stunned)
         {
             m_Animator.speed = m_AnimSpeedMultiplier;
         }
         else
         {
             // don't use that while airborne
-            m_Animator.speed = 1;
+            //m_Animator.speed = 1;
         }
         //if (m_IsAttacking && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f && AIstate != AIStates.idel)
         //{
