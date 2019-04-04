@@ -15,11 +15,11 @@ public class TankAIController : MonoBehaviour
     bool isGoingTowardsPlayer = false;
     public Transform secondaryTarget;
     bool isAwayTargetSet = false;
+    LayerMask mask; 
 
     // Start is called before the first frame update
     void Start()
     {
-        tankState = AIStates.idel;
         aiChirectorScript = GetComponent<AIChirectorManager>();
         tankAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -32,6 +32,11 @@ public class TankAIController : MonoBehaviour
     void Update()
     {
         TankAISateAIManagement();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color=Color.red;
+        Gizmos.DrawSphere(secondaryTarget.position, 5f); 
     }
 
     void TankAISateAIManagement()
@@ -72,26 +77,26 @@ public class TankAIController : MonoBehaviour
 
             case AIStates.rushAttack:
                 StopCoroutine(RushAttackTime());
-                if (isAwayTargetSet && !isGoingTowardsPlayer)
+                if (isAwayTargetSet && !isGoingTowardsPlayer && tankAgent.remainingDistance > tankAgent.stoppingDistance)
                 {
                     tankAgent.SetDestination(secondaryTarget.position);
                     aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
                 }
-                if (isAwayTargetSet && tankAgent.remainingDistance < tankAgent.stoppingDistance && !isGoingTowardsPlayer)
+                else if (isAwayTargetSet && tankAgent.remainingDistance < tankAgent.stoppingDistance && !isGoingTowardsPlayer)
                 {
-                    tankAgent.SetDestination(player.transform.position + transform.forward * 3);
+                    tankAgent.SetDestination(player.transform.position);
                     aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
                     isGoingTowardsPlayer = true;
                     isAwayTargetSet = false;
                 }
-                if (isGoingTowardsPlayer /*&& tankAgent.remainingDistance > tankAgent.stoppingDistance*/)
+                else if(isGoingTowardsPlayer && !isAwayTargetSet/*&& tankAgent.remainingDistance > tankAgent.stoppingDistance*/)
                 {
                     tankAgent.SetDestination(player.transform.position);
                     GetComponent<AIChirectorManager>().hitStrength = 50f;
                     aiChirectorScript.Move(tankAgent.desiredVelocity * 2, false, false, tankState);
 
                 }
-                if (isGoingTowardsPlayer && tankAgent.remainingDistance < tankAgent.stoppingDistance)
+                else if(isGoingTowardsPlayer && tankAgent.remainingDistance < tankAgent.stoppingDistance)
                 {
                     //tankAgent.SetDestination(player.transform.position + transform.forward * 1);
                     //StartCoroutine(RushAttackTime());
@@ -133,6 +138,9 @@ public class TankAIController : MonoBehaviour
             secondaryTarget.position = new Vector3(playerPos.position.x + awayRadius * Mathf.Cos(randAngle), playerPos.position.y, playerPos.position.z + awayRadius * Mathf.Sin(randAngle));
             isAwayTargetSet = true;
             tankState = AIStates.rushAttack;
+            NavMeshHit navMeshHit;
+            NavMesh.SamplePosition(secondaryTarget.position, out navMeshHit, awayRadius, mask);
+            secondaryTarget.position = navMeshHit.position; 
             //tankAgent.speed = 2;
         }
         else

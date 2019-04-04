@@ -15,7 +15,7 @@ MonoBehaviour:
   components:
   - {fileID: 114768911825701282}
   - {fileID: 114438921651473220}
-  - {fileID: 114844262277407182}
+  - {fileID: 114914398325855730}
   - {fileID: 114250410774282012}
   - {fileID: 114431183882271374}
 --- !u!114 &114250410774282012
@@ -168,7 +168,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
     min: 0
---- !u!114 &114844262277407182
+--- !u!114 &114914398325855730
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -229,14 +229,14 @@ MonoBehaviour:
     min: 0
     max: 5
   skyTint:
-    m_OverrideState: 0
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.33686084, b: 0, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
   groundColor:
     m_OverrideState: 0
-    m_Value: {r: 0.369, g: 0.349, b: 0.341, a: 1}
+    m_Value: {r: 0.8018868, g: 0.1534373, b: 0.14751692, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1

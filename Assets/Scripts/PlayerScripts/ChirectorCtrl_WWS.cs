@@ -117,7 +117,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
                             
                             if (hit.transform.gameObject.GetComponent<TankAIController>().tankState == AIStates.stunned)
                             {
-                                hit.transform.gameObject.GetComponent<HealthManager>().TakeDamage(true, 20);
+                                hit.transform.gameObject.GetComponent<EnemyHealth>().TakeDamage(true, 20);
                                 Rigidbody enemy = hit.transform.gameObject.GetComponent<Rigidbody>();
                                 enemy.AddForce(attackAreas[i].transform.forward * hitStrength, ForceMode.Impulse);
                                 ParticleSystem bloodSpatter = Instantiate(bloodPrefab, hit.point, hit.transform.rotation, hit.transform) as ParticleSystem;

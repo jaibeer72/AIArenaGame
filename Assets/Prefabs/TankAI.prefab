@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 3179021322640655921}
   - component: {fileID: 5735605315315140673}
   - component: {fileID: 7025921362570596082}
-  - component: {fileID: 6367674968063154629}
+  - component: {fileID: 1781804134010354212}
   - component: {fileID: 1051675362}
   - component: {fileID: 1051675361}
   - component: {fileID: 672919499777892705}
@@ -439,7 +439,7 @@ MonoBehaviour:
   tankState: 0
   awayRadius: 10
   secondaryTarget: {fileID: 0}
---- !u!114 &6367674968063154629
+--- !u!114 &1781804134010354212
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -448,11 +448,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2350203545465831518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4fbd265b4b9d4a4e99eee9ee61a8b0c, type: 3}
+  m_Script: {fileID: 11500000, guid: f2fd39a4096daa34b8873de5d1442f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  playerMat: {fileID: 0}
+  health: 0
+  currentHealth: 0
+  damageTextPrefab: {fileID: 2643063241446593465, guid: a8b5445ddc4ff424696c1d76df0d8a31,
+    type: 3}
 --- !u!54 &1051675362
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -496,6 +498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 500
+  currentHealth: 0
   damageTextPrefab: {fileID: 2643063241446593465, guid: a8b5445ddc4ff424696c1d76df0d8a31,
     type: 3}
 --- !u!1 &2627142500234752814

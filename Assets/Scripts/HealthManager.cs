@@ -10,7 +10,7 @@ public class HealthManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         currentHealth = health;
         playerMat.SetFloat("_FadeAmount", 0.0f); 
     }
