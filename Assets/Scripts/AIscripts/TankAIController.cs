@@ -15,7 +15,7 @@ public class TankAIController : MonoBehaviour
     bool isGoingTowardsPlayer = false;
     public Transform secondaryTarget;
     bool isAwayTargetSet = false;
-    LayerMask mask; 
+    public LayerMask mask; 
 
     // Start is called before the first frame update
     void Start()

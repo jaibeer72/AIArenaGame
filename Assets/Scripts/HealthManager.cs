@@ -30,7 +30,6 @@ public class HealthManager : MonoBehaviour
             {
                
                 float amout = 1f - ((float)currentHealth / (float)health);
-                Debug.Log(amout);
                 currentHealth -= damage;
                 playerMat.SetFloat("_FadeAmount", amout);
             }

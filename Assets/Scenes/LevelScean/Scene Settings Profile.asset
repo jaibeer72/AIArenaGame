@@ -18,6 +18,8 @@ MonoBehaviour:
   - {fileID: 114914398325855730}
   - {fileID: 114250410774282012}
   - {fileID: 114431183882271374}
+  - {fileID: 114491120248331556}
+  - {fileID: 114758401269056662}
 --- !u!114 &114250410774282012
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -30,48 +32,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2150ee00179b2f4418ea8b21a7e98eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   colorMode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.8392157, g: 0.13725494, b: 0.1372549, a: 1}
+    m_Value: {r: 0.6981132, g: 0.042741627, b: 0, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   density:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.738
     min: 0
     max: 1
   maxFogDistance:
     m_OverrideState: 1
-    m_Value: 3750
+    m_Value: 44.36
     min: 0
   mipFogMaxMip:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.821
     min: 0
     max: 1
   mipFogNear:
     m_OverrideState: 1
-    m_Value: 361.92
+    m_Value: 1000
     min: 0
   mipFogFar:
     m_OverrideState: 1
-    m_Value: 426
+    m_Value: 100
     min: 0
   fogDistance:
     m_OverrideState: 1
-    m_Value: 337.23
+    m_Value: 13.16
     min: 0
   fogBaseHeight:
     m_OverrideState: 1
-    m_Value: 8.6
+    m_Value: -1.8
   fogHeightAttenuation:
     m_OverrideState: 1
-    m_Value: 0.587
+    m_Value: 0.325
     min: 0
     max: 1
 --- !u!114 &114431183882271374
@@ -115,6 +117,82 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &114491120248331556
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e17fad69ea181b4483974138b566975, type: 3}
+  m_Name: ScreenSpaceRefraction
+  m_EditorClassIdentifier: 
+  active: 0
+  screenFadeDistance:
+    m_OverrideState: 1
+    m_Value: 0.854
+    min: 0.001
+    max: 1
+--- !u!114 &114758401269056662
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb673446a9a2dfa408924fe9a56322e0, type: 3}
+  m_Name: LinearFog
+  m_EditorClassIdentifier: 
+  active: 1
+  colorMode:
+    m_OverrideState: 1
+    m_Value: 1
+  color:
+    m_OverrideState: 0
+    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  density:
+    m_OverrideState: 1
+    m_Value: 0.395
+    min: 0
+    max: 1
+  maxFogDistance:
+    m_OverrideState: 0
+    m_Value: 5000
+    min: 0
+  mipFogMaxMip:
+    m_OverrideState: 0
+    m_Value: 0.5
+    min: 0
+    max: 1
+  mipFogNear:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+  mipFogFar:
+    m_OverrideState: 1
+    m_Value: 100
+    min: 0
+  fogStart:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+  fogEnd:
+    m_OverrideState: 1
+    m_Value: 440
+    min: 0
+  fogHeightStart:
+    m_OverrideState: 1
+    m_Value: 0
+  fogHeightEnd:
+    m_OverrideState: 1
+    m_Value: 20.9
 --- !u!114 &114768911825701282
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -130,7 +208,7 @@ MonoBehaviour:
   active: 1
   maxShadowDistance:
     m_OverrideState: 1
-    m_Value: 500
+    m_Value: 0
     min: 0
   cascadeShadowSplitCount:
     m_OverrideState: 1
@@ -139,17 +217,17 @@ MonoBehaviour:
     max: 4
   cascadeShadowSplit0:
     m_OverrideState: 1
-    m_Value: 0.05
+    m_Value: 0.235
     min: 0
     max: 1
   cascadeShadowSplit1:
     m_OverrideState: 1
-    m_Value: 0.15
+    m_Value: 0.713
     min: 0
     max: 1
   cascadeShadowSplit2:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 1
     min: 0
     max: 1
   cascadeShadowBorder0:
@@ -190,11 +268,11 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   exposure:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: -0.18
   multiplier:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0.73
     min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 0
@@ -211,35 +289,35 @@ MonoBehaviour:
     m_Value: 0
     min: 0
   includeSunInBaking:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   sunSize:
-    m_OverrideState: 0
-    m_Value: 0.04
+    m_OverrideState: 1
+    m_Value: 0.046
     min: 0
     max: 1
   sunSizeConvergence:
-    m_OverrideState: 0
-    m_Value: 5
+    m_OverrideState: 1
+    m_Value: 8.89
     min: 1
     max: 10
   atmosphereThickness:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0.21
     min: 0
     max: 5
   skyTint:
-    m_OverrideState: 1
-    m_Value: {r: 1, g: 0.33686084, b: 0, a: 1}
+    m_OverrideState: 0
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
   groundColor:
-    m_OverrideState: 0
-    m_Value: {r: 0.8018868, g: 0.1534373, b: 0.14751692, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
   enableSunDisk:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1

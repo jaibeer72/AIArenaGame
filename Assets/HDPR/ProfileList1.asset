@@ -52,7 +52,7 @@ MonoBehaviour:
     transmissionMode: 1
     thicknessRemap: {x: 0, y: 5}
     worldScale: 1
-    ior: 1.4
+    ior: 1.459
   - name: Diffusion Profile 6
     scatteringDistance: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     transmissionTint: {r: 1, g: 1, b: 1, a: 1}

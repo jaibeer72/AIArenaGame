@@ -305,7 +305,7 @@ public class ChirectorCtrl_WWS : MonoBehaviour
 
         if (attack == AttackType.magic && m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f && other.gameObject.tag == "Enemy")
         {
-            if(other.gameObject.GetComponent<TankAIController>() != null &&other.gameObject.GetComponent< TankAIController>().tankState!=AIStates.stunned)
+            if(other.gameObject.GetComponent<TankAIController>() != null &&other.gameObject.GetComponent< TankAIController>().tankState!=AIStates.stunned && other.gameObject.GetComponent<TankAIController>().tankState != AIStates.dead)
             {
                 other.GetComponent<TankAIController>().isAttacked(attack);
                 StartCoroutine(other.GetComponent<TankAIController>().StunTime()); 

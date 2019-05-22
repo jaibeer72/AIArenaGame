@@ -31,7 +31,7 @@ public class EnemyHealth : MonoBehaviour
                 damageText.GetComponentInChildren<Text>().text = damage.ToString();
                 Destroy(damageText.gameObject, 1);
                 float amout = 1f - ((float)currentHealth / (float)health);
-                Debug.Log(amout);
+                //Debug.Log(amout);
                 currentHealth -= damage;
 
             }
@@ -40,7 +40,7 @@ public class EnemyHealth : MonoBehaviour
                 if (gameObject.GetComponent<TankAIController>() != null)
                 {
                     gameObject.GetComponent<TankAIController>().tankState = AIStates.dead;
-                    Destroy(gameObject, 6); 
+                    Destroy(gameObject, 10); 
                 }
                 if (gameObject.GetComponent<TrollAIController>() != null)
                 {

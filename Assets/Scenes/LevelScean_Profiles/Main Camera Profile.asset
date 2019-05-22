@@ -14,10 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 114538922065061976}
-  - {fileID: 114121602317771954}
-  - {fileID: 114692779230978786}
-  - {fileID: 114850525289165264}
---- !u!114 &114121602317771954
+  - {fileID: 114232748814167506}
+--- !u!114 &114232748814167506
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -35,25 +33,25 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 5.6
+    value: 31.43
   threshold:
     overrideState: 1
-    value: 6.01
+    value: 6.89
   softKnee:
     overrideState: 1
-    value: 0.572
+    value: 0.934
   clamp:
-    overrideState: 1
-    value: 63198
+    overrideState: 0
+    value: 65472
   diffusion:
     overrideState: 1
-    value: 7.93
+    value: 9.2
   anamorphicRatio:
     overrideState: 1
-    value: 1
+    value: 0.545
   color:
     overrideState: 1
-    value: {r: 0.6226415, g: 0.39061943, b: 0.39061943, a: 1}
+    value: {r: 0.9622642, g: 0.46151143, b: 0, a: 1}
   fastMode:
     overrideState: 0
     value: 0
@@ -85,7 +83,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 0.81
+    value: 0.45
   color:
     overrideState: 0
     value: {r: 0, g: 0, b: 0, a: 1}
@@ -113,75 +111,3 @@ MonoBehaviour:
   quality:
     overrideState: 0
     value: 2
---- !u!114 &114692779230978786
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b924e2dad56384a8df2a1e111bb675, type: 3}
-  m_Name: Vignette
-  m_EditorClassIdentifier: 
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  mode:
-    overrideState: 1
-    value: 0
-  color:
-    overrideState: 0
-    value: {r: 0, g: 0, b: 0, a: 1}
-  center:
-    overrideState: 0
-    value: {x: 0.5, y: 0.5}
-  intensity:
-    overrideState: 1
-    value: 0.494
-  smoothness:
-    overrideState: 1
-    value: 0.12
-  roundness:
-    overrideState: 0
-    value: 1
-  rounded:
-    overrideState: 0
-    value: 0
-  mask:
-    overrideState: 0
-    value: {fileID: 0}
-    defaultState: 1
-  opacity:
-    overrideState: 0
-    value: 1
---- !u!114 &114850525289165264
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d65e486e4de6e5448a8fbb43dc8756a0, type: 3}
-  m_Name: Grain
-  m_EditorClassIdentifier: 
-  active: 1
-  enabled:
-    overrideState: 1
-    value: 1
-  colored:
-    overrideState: 0
-    value: 1
-  intensity:
-    overrideState: 1
-    value: 0
-  size:
-    overrideState: 1
-    value: 2.21
-  lumContrib:
-    overrideState: 1
-    value: 0.926
