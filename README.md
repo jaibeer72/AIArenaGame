@@ -1,108 +1,104 @@
 # AI project with everything under explaned
 
-[**[Introduction.](#introduction.) 2**]{dir="ltr"}
+**[Introduction.](#introduction.) 2**
 
-[**[Types Of AI.](#types-of-ai.) 3**]{dir="ltr"}
+**[Types Of AI.](#types-of-ai.) 3**
 
-> [[Navigation](#navigation) 3]{dir="ltr"}
+> [Navigation](#navigation) 3
 >
-> [[The Steering Algorithm](#the-steering-algorithm) 5]{dir="ltr"}
+> [The Steering Algorithm](#the-steering-algorithm) 5
 >
-> [[Behavioral Trees](#behavioral-trees) 6]{dir="ltr"}
+> [Behavioral Trees](#behavioral-trees) 6
 >
-> [[Data Driven vs Code Driven](#data-driven-vs-code-driven)
-> 6]{dir="ltr"}
+> [Data Driven vs Code Driven](#data-driven-vs-code-driven)
+> 6
 >
-> [[Tree Traversal](#tree-traversal) 6]{dir="ltr"}
+> [Tree Traversal](#tree-traversal) 6
 >
-> [[Finite State Machine](#finite-state-machine) 7]{dir="ltr"}
+> [Finite State Machine](#finite-state-machine) 7
 
-[**[Other Research.](#other-research.) 10**]{dir="ltr"}
+**[Other Research.](#other-research.) 10**
 
-[**[Setting Up Player](#setting-up-player) 10**]{dir="ltr"}
+**[Setting Up Player](#setting-up-player) 10**
 
-> [[Input Manager](#input-manager) 15]{dir="ltr"}
+> [Input Manager](#input-manager) 15
 >
-> [[Updated Movement
+> [Updated Movement
 > ChirectorCtrl\_WWS.cs](#updated-movement-chirectorctrl_wws.cs)
-> 17]{dir="ltr"}
+> 17
 >
-> [[Adding Attack types Player](#adding-attack-types-player)
-> 19]{dir="ltr"}
+> [Adding Attack types Player](#adding-attack-types-player)
+> 19
 >
-> [[Player Update to work with magic attack and Adding
+> [Player Update to work with magic attack and Adding
 > VFX](#player-update-to-work-with-magic-attack-and-adding-vfx)
-> 20]{dir="ltr"}
+> 20
 >
-> [[Chirector controller and VFX controlling
+> [Chirector controller and VFX controlling
 > management](#chirector-controller-and-vfx-controlling-management)
-> 21]{dir="ltr"}
+> 21
 
-[[Setting Up AI](#setting-up-ai) **22**]{dir="ltr"}
+[Setting Up AI](#setting-up-ai) **22**
 
-> [[AI Script Setting up](#ai-script-setting-up) 22]{dir="ltr"}
+> [AI Script Setting up](#ai-script-setting-up) 22
 >
-> [[AI State Contollers](#ai-state-contollers) 29]{dir="ltr"}
+> [AI State Contollers](#ai-state-contollers) 29
 >
-> [[If Based AI system](#if-based-ai-system) 32]{dir="ltr"}
+> [If Based AI system](#if-based-ai-system) 32
 >
-> [[Switch Based AI](#switch-based-ai) 33]{dir="ltr"}
+> [Switch Based AI](#switch-based-ai) 33
 
-[**[Final output](#final-output) 41**]{dir="ltr"}
+**[Final output](#final-output) 41**
 
-[]{dir="ltr"}
 
-[]{dir="ltr"}
-
-[Introduction.]{dir="ltr"}
+[Introduction.]
 ==========================
 
 [In video games it is said when you give intelligent behavior to
 something that is not being controlled by the player it is called NPC
-(non-playable Characters)]{dir="ltr"}
+(non-playable Characters)]
 
-[]{dir="ltr"}
 
-[Types Of AI.]{dir="ltr"}
+[Types Of AI.]
 =========================
 
-[Navigation]{dir="ltr"}
+[Navigation]
 -----------------------
 
 [In games a process called navigation mesh is used to give movement to
-AI's.]{dir="ltr"}
+AI's.]
 
-[A NavMesh is a Data structure]{dir="ltr"}
+[A NavMesh is a Data structure]
 
-[]{dir="ltr"}
 
-[In Unity]{dir="ltr"}
+
+[In Unity]
 
 ["The Navigation System allows you to create characters which can
 navigate the game world. It gives your characters the ability to
 understand that they need to take stairs to reach second floor, or to
-jump to get over a ditch. The Unity **NavMesh**]{dir="ltr"}
+jump to get over a ditch. The Unity **NavMesh**]
 
-[]{dir="ltr"}
 
-[system consists of the following pieces:]{dir="ltr"}
+
+[system consists of the following pieces:]
 
 -   [**NavMesh** (short for Navigation Mesh) is a data structure which
     > describes the walkable surfaces of the game world and allows to
     > find path from one walkable location to another in the game world.
     > The data structure is built, or baked, automatically from your
-    > level geometry.]{dir="ltr"}
+    > level geometry.]
 
     > [**NavMesh Agent** component help you to create characters which
     > avoid each other while moving towards their goal. Agents reason
     > about the game world using the NavMesh and they know how to avoid
-    > each other as well as moving obstacles.]{dir="ltr"}
+    > each other as well as moving obstacles.]
 
     > [**Off-Mesh Link** component allows you to incorporate navigation
     > shortcuts which cannot be represented using a walkable surface.
     > For example, jumping over a ditch or a fence, or opening a door
     > before walking through it, can be all described as Off-mesh
-    > links.]{dir="ltr"}
+    > links.]
 
     > [**NavMesh Obstacle** component allows you to describe moving
     > obstacles the agents should avoid while navigating the world. A
@@ -112,98 +108,98 @@ jump to get over a ditch. The Unity **NavMesh**]{dir="ltr"}
     > it will carve a hole in the navmesh so that the agents can change
     > their paths to steer around it, or if the stationary obstacle is
     > blocking the path way, the agents can find a different
-    > route."]{dir="ltr"}[^1][]{dir="ltr"}
+    > route."][^1]
 
-[This is how unity defines it]{dir="ltr"}
+[This is how unity defines it]
 
-[]{dir="ltr"}
+
 
 [In terms of Navmesh we use path finding algorithms such as BFS and DFS
 to find the shortest location these are called graph search
-algorithms]{dir="ltr"}
+algorithms]
 
-[]{dir="ltr"}
 
-[The way it works is that]{dir="ltr"}
+
+[The way it works is that]
 
 ["we create a funnel that checks each time if the next point is in the
 funnel or not. The funnel is composed of 3 points: a central apex, a
 left point (called left apex) and a right point (called right apex). At
 the beginning, the tested point is on the right side, then we alternate
 to the left and so on until we reach our point of destination. (as if we
-were walking)]{dir="ltr"}
+were walking)]
 
 ![\[funnel\_explanation.png\]](.//media/image3.png){width="6.0625in"
-height="6.65625in"}[]{dir="ltr"}
+height="6.65625in"}
 
 [When a point is in the funnel, we continue the algorithm with the other
-side.]{dir="ltr"}
+side.]
 
 [If the point is outside the funnel, depending on which side the tested
 point belongs to, we take the apex from the other side of the funnel and
-add it to a list of final waypoints.]{dir="ltr"}
+add it to a list of final waypoints.]
 
 [The algorithm is working correctly most of the time. However, the
 algorithm had a bug that add the last point twice if none of the
 vertices of the last connection before the destination point were added
 to the list of final waypoints. We just added an if at the moment but we
-could come back later to optimize it.]{dir="ltr"}
+could come back later to optimize it.]
 
-[In our case, the funnel algorithm gives this path:]{dir="ltr"}
+[In our case, the funnel algorithm gives this path:]
 
 ![The pulled path](.//media/image14.png){width="6.270833333333333in"
-height="3.4027777777777777in"}[]{dir="ltr"}
+height="3.4027777777777777in"}
 
-### **[The Steering Algorithm]{dir="ltr"}**
+### **[The Steering Algorithm]**
 
 [Now that we have a list of waypoints, we can finally just run our
-character at every point.]{dir="ltr"}
+character at every point.]
 
 [But if there were walls in our geometry, then Buddy would run right
 into a corner wall. He won\'t be able to reach his destination because
-he isn\'t small enough to avoid the corner walls.]{dir="ltr"}
+he isn\'t small enough to avoid the corner walls.]
 
-[That\'s the role of the steering algorithm.]{dir="ltr"}
+[That\'s the role of the steering algorithm.]
 
 [Our algorithm is still in heavy development, but its main gist is that
 we check if the next position of the agent is not in the navigation
 meshes. If that\'s the case, then we change its direction so that the
 agent doesn\'t hit the wall like an idiot. There is also a path curving
 algorithm, but it\'s still too early to know if we\'ll use that at
-all\...]{dir="ltr"}
+all\...]
 
 [With the steering algorithm, we make sure that Buddy moves safely to
-his destination. (Look how proud he is!)]{dir="ltr"}
+his destination. (Look how proud he is!)]
 
 ![Buddy is moving](.//media/image5.png){width="6.270833333333333in"
-height="3.4027777777777777in"}[]{dir="ltr"}
+height="3.4027777777777777in"}
 
 [So, this is the navigation mesh
-algorithm."]{dir="ltr"}[^2][]{dir="ltr"}
+algorithm."][^2]
 
-[]{dir="ltr"}
 
-[Behavioral Trees]{dir="ltr"}
+
+[Behavioral Trees]
 -----------------------------
 
 [Like navmesh it is a data structure that defines the behavior of a game
 works and what the AI can and cannot do in certain
-situations]{dir="ltr"}
+situations]
 
-[]{dir="ltr"}
 
-[]{dir="ltr"}
+
+
 
 ["a behaviour tree is a tree of hierarchical nodes that control the flow
 of decision making of an AI entity. At the extents of the tree, the
 leaves, are the actual commands that control the AI entity, and forming
 the branches are various types of utility nodes that control the AI's
 walk down the trees to reach the sequences of commands best suited to
-the situation.]{dir="ltr"}
+the situation.]
 
-[]{dir="ltr"}
 
-### [Data Driven vs Code Driven]{dir="ltr"}
+
+### [Data Driven vs Code Driven]
 
 [This distinction has little relevance to this guide, however it should
 be noted that there are many different possible implementations of
@@ -211,12 +207,12 @@ behaviour trees. A main distinction is whether the trees are defined
 externally to the codebase, perhaps in XML or a proprietary format and
 manipulated with an external editor, or whether the structure of the
 trees is defined directly in code via nested class
-instances.]{dir="ltr"}
+instances.]
 
 [JBT uses a strange hybrid of these two, where an editor is provided to
 allow you to visually construct your behaviour tree, however an exporter
 command line tool actually generates java code to represent the
-behaviour trees in the code-base.]{dir="ltr"}
+behaviour trees in the code-base.]
 
 [Whatever the implementation, the leaf nodes, the nodes that actually do
 the game specific business and control your character or check the
@@ -226,9 +222,9 @@ language such as Lua or Python. These can then be leveraged by your
 trees to provide complex behaviours. It is quite how expressive these
 nodes can be, sometimes operating more as a standard library to
 manipulate data within the tree itself, than just simply character
-commands, that really make behaviour trees exciting to me.]{dir="ltr"}
+commands, that really make behaviour trees exciting to me.]
 
-### [Tree Traversal]{dir="ltr"}
+### [Tree Traversal]
 
 [A core aspect of Behavior Trees is that unlike a method within your
 codebase, a particular node or branch in the tree may take many ticks of
@@ -236,16 +232,16 @@ the game to complete. In the basic implementation of behaviour trees,
 the system will traverse down from the root of the tree every single
 frame, testing each node down the tree to see which is active,
 rechecking any nodes along the way, until it reaches the currently
-active node to tick it again.]{dir="ltr"}
+active node to tick it again.]
 
 [This isn't a very efficient way to do things, especially when the
 behaviour tree gets deeper as its developed and expanded during
 development. I'd say its a must that any behaviour tree you implement
 should store any currently processing nodes so they can be ticked
 directly within the behaviour tree engine rather than per tick traversal
-of the entire tree. Thankfully JBT fits into this category.]{dir="ltr"}
+of the entire tree. Thankfully JBT fits into this category.]
 
-[Flow]{dir="ltr"}
+[Flow]
 
 [A behaviour tree is made up of several types of nodes, however some
 core functionality is common to any type of node in a behaviour tree.
@@ -253,20 +249,20 @@ This is that they can return one of three statuses. (Depending on the
 implementation of the behaviour tree, there may be more than three
 return statuses, however I\'ve yet to use one of these in practice and
 they are not pertinent to any introduction to the subject) The three
-common statuses are as follows:]{dir="ltr"}
+common statuses are as follows:]
 
-[Success]{dir="ltr"}
+[Success]
 
-[Failure]{dir="ltr"}
+[Failure]
 
-[Running]{dir="ltr"}
+[Running]
 
 [The first two, as their names suggest, inform their parent that their
 operation was a success or a failure. The third means that success or
 failure is not yet determined, and the node is still running. The node
 will be ticked again next time the tree is ticked, at which point it
 will again have the opportunity to succeed, fail or continue
-running.]{dir="ltr"}
+running.]
 
 [This functionality is key to the power of behaviour trees, since it
 allows a node\'s processing to persist for many ticks of the game. For
@@ -277,90 +273,90 @@ whatever reason, or some other complication arisen during the walk to
 stop the character reaching the target location, then the node returns
 failure to the parent. If at any point the character\'s current location
 equals the target location, then it returns success indicating the Walk
-command executed successfully.]{dir="ltr"}
+command executed successfully.]
 
-[]{dir="ltr"}
 
-["]{dir="ltr"}[^3][]{dir="ltr"}
+
+["][^3]
 
 [Basically the idea is that it works on the bases of whether or not a
 code is running and has failed on its task. If it succeeds then what to
-do next is an idea that is implemented. Even players can]{dir="ltr"}
+do next is an idea that is implemented. Even players can]
 
-[]{dir="ltr"}
 
-[Finite State Machine]{dir="ltr"} 
+
+[Finite State Machine] 
 ----------------------------------
 
 ["A finite-state machine, or FSM for short, is a model of computation
 based on a hypothetical machine made of one or more states. Only a
 single state can be active at the same time, so the machine must
 transition from one state to another in order to perform different
-actions.]{dir="ltr"}
+actions.]
 
 [FSMs are commonly used to organize and represent an execution flow,
 which is useful to implement AI in games. The \"brain\" of an enemy, for
 instance, can be implemented using a FSM: every state represents an
-action, such as attack or evade:]{dir="ltr"}
+action, such as attack or evade:]
 
-![](.//media/image12.png){width="6.041666666666667in"
-height="3.6458333333333335in"}[]{dir="ltr"}
+!(.//media/image12.png){width="6.041666666666667in"
+height="3.6458333333333335in"}
 
-[FSM representing the brain of an enemy.]{dir="ltr"}
+[FSM representing the brain of an enemy.]
 
 [An FSM can be represented by a graph, where the nodes are the states
 and the edges are the transitions. Each edge has a label informing when
 the transition should happen, like the player is near label in the
 figure above, which indicates that the machine will transition from
-wander to attack if the player is near.]{dir="ltr"}
+wander to attack if the player is near.]
 
-[Planning States and Their Transitions]{dir="ltr"}
+[Planning States and Their Transitions]
 
 [The implementation of a FSM begins with the states and transitions it
 will have. Imagine the following FSM, representing the brain of an ant
-carrying leaves home:]{dir="ltr"}
+carrying leaves home:]
 
-![](.//media/image7.png){width="6.041666666666667in"
-height="3.6458333333333335in"}[]{dir="ltr"}
+!(.//media/image7.png){width="6.041666666666667in"
+height="3.6458333333333335in"}
 
-[FSM representing the brain of an ant.]{dir="ltr"}
+[FSM representing the brain of an ant.]
 
 [The starting point is the find leaf state, which will remain active
 until the ant finds the leaf. When that happens, the current state is
 transitioned to go home, which remains active until the ant gets home.
 When the ant finally arrives home, the active state becomes find leaf
-again, so the ant repeats its journey.]{dir="ltr"}
+again, so the ant repeats its journey.]
 
 [If the active state is find leaf and the mouse cursor approaches the
 ant, there is a transition to the run away state. While that state is
 active, the ant will run away from the mouse cursor. When the cursor is
 not a threat anymore, there is a transition back to the find leaf
-state.]{dir="ltr"}
+state.]
 
 [Since there are transitions connecting find leaf and run away, the ant
 will always run away from the mouse cursor when it approaches *as long
 as the ant is finding the leaf*. That *will not* happen if the active
 state is go home (check out the figure below). In that case the ant will
 walk home fearlessly, only transitioning to the find leaf state when it
-arrives home.]{dir="ltr"}
+arrives home.]
 
-![](.//media/image9.png){width="6.041666666666667in"
-height="3.6458333333333335in"}[]{dir="ltr"}
+!(.//media/image9.png){width="6.041666666666667in"
+height="3.6458333333333335in"}
 
 [FSM representing the brain of an ant. Notice the lack of a transition
-between run away and go home. "]{dir="ltr"}[^4][]{dir="ltr"}
+between run away and go home. "][^4]
 
-[]{dir="ltr"}
+
 
 [This is the most basic type of AI and can be understood easily but it
-is slightly difficult to scale and create complex behavior.]{dir="ltr"}
+is slightly difficult to scale and create complex behavior.]
 
-[.]{dir="ltr"}
+[.]
 
-[Other Research.]{dir="ltr"}
+[Other Research.]
 ============================
 
-[Setting Up Player]{dir="ltr"} 
+[Setting Up Player] 
 ===============================
 
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -562,16 +558,16 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   \
   \
   \#endregion\
-  }]{dir="ltr"}
+  }]
 
   ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[Input Manager]{dir="ltr"} 
+
+[Input Manager] 
 ---------------------------
 
-[﻿]{dir="ltr"}
+[﻿]
 
   --------------------------------------------------------------------------------------------------------------------------------------------------
   [using UnityEngine;\
@@ -645,19 +641,19 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   m\_Character.Move(m\_Move, m\_Jump);\
   m\_Jump = false;\
   }\
-  }]{dir="ltr"}
+  }]
 
   --------------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[]{dir="ltr"}
 
-[]{dir="ltr"}
 
-### [Updated Movement ChirectorCtrl\_WWS.cs]{dir="ltr"}
 
-[]{dir="ltr"}
+
+
+### [Updated Movement ChirectorCtrl\_WWS.cs]
+
+
 
   -----------------------------------------
   [ bool m\_Attacking;\
@@ -666,11 +662,11 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   public Transform\[\] attackAreas;\
   public float range;\
   public LayerMask myLayerMask;\
-  ]{dir="ltr"}
+  ]
 
   -----------------------------------------
 
-[]{dir="ltr"}
+
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   [private void FixedUpdate()\
@@ -694,25 +690,25 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   }\
   }\
   }\
-  }]{dir="ltr"}
+  }]
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
+
 
   -------------------------------------------------------------------------------------
   [ if(m\_Attacking && m\_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime\>1)\
   {\
   m\_Attacking = false;\
-  }]{dir="ltr"}
+  }]
 
   -------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[m\_Animator.SetBool(\"isAttacking\", m\_Attacking);]{dir="ltr"}
 
-[]{dir="ltr"}
+[m\_Animator.SetBool(\"isAttacking\", m\_Attacking);]
+
+
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   [using System.Collections.Generic;\
@@ -750,13 +746,13 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   }\
   \
   }\
-  }]{dir="ltr"}
+  }]
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[Adding Attack types Player]{dir="ltr"} 
+
+[Adding Attack types Player] 
 ----------------------------------------
 
   --------------------------
@@ -765,23 +761,23 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   basic,\
   stunn,\
   magic\
-  };]{dir="ltr"}
+  };]
 
   --------------------------
 
-[]{dir="ltr"}
 
-[Player Update to work with magic attack and Adding VFX]{dir="ltr"} 
+
+[Player Update to work with magic attack and Adding VFX] 
 --------------------------------------------------------------------
 
   --------------------------------------
   [Vector3 movementVector;\
   AttackType attack;\
-  public VisualEffect vfx;]{dir="ltr"}
+  public VisualEffect vfx;]
 
   --------------------------------------
 
-[]{dir="ltr"}
+
 
   -----------------------------------------------------------------------------------
   [public void Move(Vector3 move, bool jump, bool isAttacking, AttackType attType)\
@@ -797,20 +793,20 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   {\
   \
   m\_Attacking = PlayerInputChirector.isAttacking;\
-  }]{dir="ltr"}
+  }]
 
   -----------------------------------------------------------------------------------
 
-[]{dir="ltr"}
+
 
   -----------------------------------------------------------------------------------------------------------------
   [m\_Animator.applyRootMotion = false;\
   transform.Rotate(0, movementVector.y, 0);\
-  m\_Rigidbody.velocity = new Vector3(movementVector.x, transform.position.y, movementVector.z) \* 6;]{dir="ltr"}
+  m\_Rigidbody.velocity = new Vector3(movementVector.x, transform.position.y, movementVector.z) \* 6;]
 
   -----------------------------------------------------------------------------------------------------------------
 
-[Hitting velocity]{dir="ltr"}
+[Hitting velocity]
 
   -------------------------------------------------------------------------------
   [if (hit.transform.tag == \"Enemy\")\
@@ -818,11 +814,11 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   Rigidbody enemy = hit.transform.gameObject.GetComponent\<Rigidbody\>();\
   enemy.AddForce(attackAreas\[i\].transform.forward \* 50, ForceMode.Impulse);\
   Debug.Log(hit.transform.name);\
-  }]{dir="ltr"}
+  }]
 
   -------------------------------------------------------------------------------
 
-[]{dir="ltr"}
+
 
   -----------------------------------------------------------------------------------------
   [m\_Animator.SetBool(\"isAttacking\", m\_Attacking);\
@@ -830,13 +826,13 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   m\_Animator.SetInteger(\"AttackType\", (int)attack);\
   if (attack == AttackType.magic) { vfx.SendEvent(\"OnPlay\"); Debug.Log((int)attack); }\
   else { vfx.SendEvent(\"OnStop\"); }\
-  HandhelAttacking(PlayerInputChirector.isAttacking, attack);]{dir="ltr"}
+  HandhelAttacking(PlayerInputChirector.isAttacking, attack);]
 
   -----------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[Input Manager]{dir="ltr"}
+
+[Input Manager]
 
   --------------------------------------------
   [ public void CursorHide(bool enable)\
@@ -850,24 +846,24 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   {\
   Cursor.lockState = CursorLockMode.None;\
   }\
-  }]{dir="ltr"}
+  }]
 
   --------------------------------------------
 
-[]{dir="ltr"}
+
 
   --------------------------------------------------------------------------------------------------------------------------------
   [ if(Input.GetButtonDown(\"Fire1\")\|\| Input.GetButton(\"Fire2\")\|\|Input.GetButtonDown(\"Fire3\")) { isAttacking = true; }\
   if (Input.GetButtonDown(\"Fire1\")) { attType = AttackType.basic; }\
   if (Input.GetButtonDown(\"Fire2\")) { attType = AttackType.stunn; }\
   if (Input.GetButtonDown(\"Fire3\")) { attType = AttackType.magic; }\
-  }]{dir="ltr"}
+  }]
 
   --------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-### [Chirector controller and VFX controlling management]{dir="ltr"} 
+
+### [Chirector controller and VFX controlling management] 
 
   ------------------------------------------------------------------------------------------------------------------------------------------
   [ private void OnTriggerStay(Collider other)\
@@ -881,11 +877,11 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   Rigidbody enemy = other.transform.gameObject.GetComponent\<Rigidbody\>();\
   enemy.AddForce(dir \* hitStrength);\
   }\
-  }]{dir="ltr"}
+  }]
 
   ------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
+
 
   -------------------------------------------------------------------------------------------------------------------------------------------
   [ if (attack == AttackType.magic && PlayerInputChirector.isAttacking && m\_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime \< 1f)\
@@ -899,33 +895,33 @@ is slightly difficult to scale and create complex behavior.]{dir="ltr"}
   PlayerInputChirector.isAttacking = false;\
   vfx.SendEvent(\"OnStop\");\
   }\
-  ]{dir="ltr"}
+  ]
 
   -------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-![](.//media/image8.png){width="6.270833333333333in" height="2.375in"}[]{dir="ltr"}
+
+!(.//media/image8.png){width="6.270833333333333in" height="2.375in"}
 ===================================================================================
 
-![](.//media/image6.png){width="6.270833333333333in"
-height="4.694444444444445in"}[]{dir="ltr"}
+!(.//media/image6.png){width="6.270833333333333in"
+height="4.694444444444445in"}
 
-[Setting Up AI]{dir="ltr"}
+[Setting Up AI]
 ==========================
 
-[AI Script Setting up]{dir="ltr"} 
+[AI Script Setting up] 
 ----------------------------------
 
 [Now working on AI and using the similar script to make things work but
-first we need navmesh for the AI to walk places]{dir="ltr"}
+first we need navmesh for the AI to walk places]
 
-![](.//media/image13.png){width="6.270833333333333in"
-height="2.3333333333333335in"}[]{dir="ltr"}
+!(.//media/image13.png){width="6.270833333333333in"
+height="2.3333333333333335in"}
 
-[]{dir="ltr"}
 
-[]{dir="ltr"}
+
+
 
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   [using System.Collections.Generic;\
@@ -1201,18 +1197,18 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   }\
   }\
   \#endregion\
-  }]{dir="ltr"}
+  }]
 
   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[AI State Contollers]{dir="ltr"}
+
+[AI State Contollers]
 --------------------------------
 
-[Now Creating AI controllers for each of the different AI's]{dir="ltr"}
+[Now Creating AI controllers for each of the different AI's]
 
-[]{dir="ltr"}
+
 
   --------------------------------------------------------------------------------------------------------------------
   [using System.Collections.Generic;\
@@ -1310,15 +1306,15 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   // IEnumerator(Stay stunned for 3 seconds)\
   // and go back to idel\
   // if(Health \< 0)\
-  // Death animation]{dir="ltr"}
+  // Death animation]
 
   --------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[State manager]{dir="ltr"}
 
-[]{dir="ltr"}
+[State manager]
+
+
 
   ----------------------------
   [public enum TankAIStates\
@@ -1328,28 +1324,28 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   basicAttack,\
   rushAttack,\
   stunned\
-  };]{dir="ltr"}
+  };]
 
   ----------------------------
 
-[]{dir="ltr"}
 
-### [If Based AI system]{dir="ltr"} 
 
-[]{dir="ltr"}
+### [If Based AI system] 
+
+
 
   -------------------------------------------
   [ public float awayRadius;\
   NavMeshAgent tankAgent;\
   bool isGoingTowardsPlayer = false;\
   public Transform secondaryTarget;\
-  bool isAwayTargetSet = false;]{dir="ltr"}
+  bool isAwayTargetSet = false;]
 
   -------------------------------------------
 
-[]{dir="ltr"}
 
-[ ]{dir="ltr"}
+
+[ ]
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   [ if (isGoingTowardsPlayer && tankAgent.remainingDistance \< tankAgent.stoppingDistance)\
@@ -1398,21 +1394,21 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   // if is going towards the player\
   // return towards the player.\
   }\
-  ]{dir="ltr"}
+  ]
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-### []{dir="ltr"}
 
-### [Switch Based AI]{dir="ltr"}
+### 
 
-[Added terrain basic]{dir="ltr"}
+### [Switch Based AI]
 
-[made a feww changes added post-processing so one]{dir="ltr"}
+[Added terrain basic]
 
-[]{dir="ltr"}
+[made a feww changes added post-processing so one]
+
+
 
   -------------------------------------------------------------------------------------------------------------
   [switch (tankState)\
@@ -1484,13 +1480,13 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   default:\
   Debug.Log(\"TankState Error\");\
   break;\
-  }]{dir="ltr"}
+  }]
 
   -------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[]{dir="ltr"}
+
+
 
   --------------------------------------------------------
   [using System.Collections.Generic;\
@@ -1521,11 +1517,11 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   }\
   \
   }\
-  }]{dir="ltr"}
+  }]
 
   --------------------------------------------------------
 
-[]{dir="ltr"}
+
 
   --------------------------------------------------------------------------------
   [using System.Collections.Generic;\
@@ -1595,15 +1591,15 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   break;\
   }\
   }\
-  }]{dir="ltr"}
+  }]
 
   --------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[using System.Collections.Generic;]{dir="ltr"}
 
-[using UnityEngine;]{dir="ltr"}
+[using System.Collections.Generic;]
+
+[using UnityEngine;]
 
   --------------------------------------------------------
   [public class HealthManager : MonoBehaviour\
@@ -1631,15 +1627,15 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   }\
   \
   }\
-  }]{dir="ltr"}
+  }]
 
   --------------------------------------------------------
 
-[]{dir="ltr"}
 
-[Area Breaker Script]{dir="ltr"}
 
-[]{dir="ltr"}
+[Area Breaker Script]
+
+
 
   ---------------------------------------------------
   [using System.Collections.Generic;\
@@ -1676,21 +1672,21 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   }\
   }\
   \
-  }]{dir="ltr"}
+  }]
 
   ---------------------------------------------------
 
-[]{dir="ltr"}
 
-[-\> a few lighting changes and working on more soon.]{dir="ltr"}
 
-[-\> Ai managed Areaseprators workng]{dir="ltr"}
+[-\> a few lighting changes and working on more soon.]
 
-[-\> Healthsystem changes]{dir="ltr"}
+[-\> Ai managed Areaseprators workng]
 
-[-\> so on]{dir="ltr"}
+[-\> Healthsystem changes]
 
-[]{dir="ltr"}
+[-\> so on]
+
+
 
   ------------------------------------------------------------------------------------------------------------------------------------------------------
   [using UnityEngine.UI;\
@@ -1745,51 +1741,51 @@ height="2.3333333333333335in"}[]{dir="ltr"}
   }\
   \
   }\
-  }]{dir="ltr"}
+  }]
 
   ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-[]{dir="ltr"}
 
-[]{dir="ltr"}
 
-![](.//media/image4.png){width="6.270833333333333in"
-height="2.0555555555555554in"}![](.//media/image2.png){width="6.270833333333333in"
-height="4.819444444444445in"}[]{dir="ltr"}
 
-[]{dir="ltr"}
+
+!(.//media/image4.png){width="6.270833333333333in"
+height="2.0555555555555554in"}!(.//media/image2.png){width="6.270833333333333in"
+height="4.819444444444445in"}
+
+
 =============
 
-[Final output]{dir="ltr"} 
+[Final output] 
 ==========================
 
-![](.//media/image11.png){width="6.270833333333333in"
-height="3.5277777777777777in"}![](.//media/image16.png){width="6.270833333333333in"
-height="3.5277777777777777in"}![](.//media/image10.png){width="6.270833333333333in"
-height="3.5277777777777777in"}![](.//media/image17.png){width="6.270833333333333in"
-height="3.5277777777777777in"}![](.//media/image15.png){width="6.270833333333333in"
-height="3.5277777777777777in"}![](.//media/image18.png){width="6.270833333333333in"
-height="3.5277777777777777in"}[]{dir="ltr"}
+!(.//media/image11.png){width="6.270833333333333in"
+height="3.5277777777777777in"}!(.//media/image16.png){width="6.270833333333333in"
+height="3.5277777777777777in"}!(.//media/image10.png){width="6.270833333333333in"
+height="3.5277777777777777in"}!(.//media/image17.png){width="6.270833333333333in"
+height="3.5277777777777777in"}!(.//media/image15.png){width="6.270833333333333in"
+height="3.5277777777777777in"}!(.//media/image18.png){width="6.270833333333333in"
+height="3.5277777777777777in"}
 
-[]{dir="ltr"}
+
 
 [^1]: [ Unity Technologies. 2019. Unity - Manual: Navigation System in
     Unity. \[ONLINE\] Available at:
-    [[https://docs.unity3d.com/Manual/nav-NavigationSystem.html]{.underline}](https://docs.unity3d.com/Manual/nav-NavigationSystem.html).
-    \[Accessed 01 June 2019\].]{dir="ltr"}
+    [https://docs.unity3d.com/Manual/nav-NavigationSystem.html]{.underline}](https://docs.unity3d.com/Manual/nav-NavigationSystem.html).
+    \[Accessed 01 June 2019\].]
 
 [^2]: [ GameDev.net. 2019. Navigation Meshes and Pathfinding -
     Artificial Intelligence - GameDev.net. \[ONLINE\] Available at:
-    [[https://www.gamedev.net/articles/programming/artificial-intelligence/navigation-meshes-and-pathfinding-r4880/]{.underline}](https://www.gamedev.net/articles/programming/artificial-intelligence/navigation-meshes-and-pathfinding-r4880/).
-    \[Accessed 01 June 2019\].]{dir="ltr"}
+    [https://www.gamedev.net/articles/programming/artificial-intelligence/navigation-meshes-and-pathfinding-r4880/]{.underline}](https://www.gamedev.net/articles/programming/artificial-intelligence/navigation-meshes-and-pathfinding-r4880/).
+    \[Accessed 01 June 2019\].]
 
 [^3]: [ Gamasutra: Chris Simpson\'s Blog - Behavior trees for AI: How
     they work. 2019. Gamasutra: Chris Simpson\'s Blog - Behavior trees
     for AI: How they work. \[ONLINE\] Available at:
-    [[https://www.gamasutra.com/blogs/ChrisSimpson/20140717/221339/Behavior\_trees\_for\_AI\_How\_they\_work.php]{.underline}](https://www.gamasutra.com/blogs/ChrisSimpson/20140717/221339/Behavior_trees_for_AI_How_they_work.php).
-    \[Accessed 01 June 2019\].]{dir="ltr"}
+    [https://www.gamasutra.com/blogs/ChrisSimpson/20140717/221339/Behavior\_trees\_for\_AI\_How\_they\_work.php]{.underline}](https://www.gamasutra.com/blogs/ChrisSimpson/20140717/221339/Behavior_trees_for_AI_How_they_work.php).
+    \[Accessed 01 June 2019\].]
 
 [^4]: [ Game Development Envato Tuts+. 2019. Finite-State Machines:
     Theory and Implementation. \[ONLINE\] Available at:
-    [[https://gamedevelopment.tutsplus.com/tutorials/finite-state-machines-theory-and-implementation\--gamedev-11867]{.underline}](https://gamedevelopment.tutsplus.com/tutorials/finite-state-machines-theory-and-implementation--gamedev-11867).
-    \[Accessed 01 June 2019\].]{dir="ltr"}
+    [https://gamedevelopment.tutsplus.com/tutorials/finite-state-machines-theory-and-implementation\--gamedev-11867]{.underline}](https://gamedevelopment.tutsplus.com/tutorials/finite-state-machines-theory-and-implementation--gamedev-11867).
+    \[Accessed 01 June 2019\].]
